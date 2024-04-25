@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.data
+package com.example.inventory.data.inventory
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -22,6 +22,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.inventory.data.inventory.Item
 import kotlinx.coroutines.flow.Flow
 
 /**

@@ -1,6 +1,5 @@
 package com.example.inventory.data.client
 
-import com.example.inventory.data.Item
 import kotlinx.coroutines.flow.Flow
 
 /**

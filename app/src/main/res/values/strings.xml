@@ -35,4 +35,5 @@
     <string name="sell">Sell</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
+    <string name="no_clients_description">Oops!\nNo clients to see here.\nTap + to add.</string>
 </resources>

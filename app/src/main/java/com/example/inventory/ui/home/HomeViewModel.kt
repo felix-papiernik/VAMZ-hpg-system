@@ -18,8 +18,10 @@ package com.example.inventory.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inventory.data.Item
-import com.example.inventory.data.ItemsRepository
+import com.example.inventory.data.client.Client
+import com.example.inventory.data.client.ClientsRepository
+import com.example.inventory.data.inventory.Item
+import com.example.inventory.data.inventory.ItemsRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -28,7 +30,7 @@ import kotlinx.coroutines.flow.stateIn
 /**
  * ViewModel to retrieve all items in the Room database.
  */
-class HomeViewModel(itemsRepository: ItemsRepository) : ViewModel() {
+class HomeViewModel(itemsRepository: ItemsRepository, clientsRepository: ClientsRepository) : ViewModel() {
 
     /**
      * Holds home ui state. The list of items are retrieved from [ItemsRepository] and mapped to
@@ -42,6 +44,14 @@ class HomeViewModel(itemsRepository: ItemsRepository) : ViewModel() {
                 initialValue = HomeUiState()
             )
 
+    val homeClients: StateFlow<HomeUiStateClients> =
+        clientsRepository.getAllClientsStream().map { HomeUiStateClients(it) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+                initialValue = HomeUiStateClients()
+            )
+
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
@@ -51,3 +61,4 @@ class HomeViewModel(itemsRepository: ItemsRepository) : ViewModel() {
  * Ui State for HomeScreen
  */
 data class HomeUiState(val itemList: List<Item> = listOf())
+data class HomeUiStateClients(val clientsList: List<Client> = listOf())

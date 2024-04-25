@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.inventory.data
+package com.example.inventory.data.inventory
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

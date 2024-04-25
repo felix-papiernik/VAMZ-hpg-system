@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.example.inventory.data
+package com.example.inventory.data.inventory
 
+import com.example.inventory.data.inventory.Item
+import com.example.inventory.data.inventory.ItemDao
+import com.example.inventory.data.inventory.ItemsRepository
 import kotlinx.coroutines.flow.Flow
 
 class OfflineItemsRepository(private val itemDao: ItemDao) : ItemsRepository {

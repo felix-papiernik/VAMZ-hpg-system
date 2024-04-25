@@ -2,7 +2,6 @@ package com.example.inventory.data.client
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 
 /**
@@ -15,5 +14,11 @@ data class Client (
     val firstName: String,
     val lastName: String,
     val email: String,
-    val dateOfBirth: Date
+    val dateOfBirth: String
+)
+
+data class Date(
+    val day: Int,
+    val month: Int,
+    val year: Int,
 )

@@ -17,6 +17,7 @@
 package com.example.inventory.data
 
 import android.content.Context
+import com.example.inventory.data.client.ClientsRepository
 
 /**
  * App container for Dependency injection.

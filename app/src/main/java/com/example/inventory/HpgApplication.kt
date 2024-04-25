@@ -20,7 +20,7 @@ import android.app.Application
 import com.example.inventory.data.AppContainer
 import com.example.inventory.data.AppDataContainer
 
-class InventoryApplication : Application() {
+class HpgApplication : Application() {
 
     /**
      * AppContainer instance used by the rest of classes to obtain dependencies

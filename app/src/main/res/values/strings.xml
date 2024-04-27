@@ -35,5 +35,18 @@
     <string name="sell">Sell</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
-    <string name="no_clients_description">Oops!\nNo clients to see here.\nTap + to add.</string>
+    <string name="no_clients_description">No clients to see here.</string>
+    <string name="add_client">Add new client</string>
+    <string name="client_firstname">Client\'s firstname*</string>
+    <string name="client_lastname">Client\'s lastname*</string>
+    <string name="client_email">Client\'s email*</string>
+    <string name="client_date_of_birth_">Client\'s date of birth in format DD.MM.YYYY*</string>
+    <string name="client_detail_title">Client details</string>
+    <string name="firstname">firstname</string>
+    <string name="lastname">lastname</string>
+    <string name="date_of_birth">date of birth</string>
+    <string name="email">email</string>
+    <string name="edit_client_title">Edit client</string>
+    <string name="personal_information">Personal information</string>
+    <string name="edit_personal_informations">edit personal informations</string>
 </resources>

@@ -16,9 +16,3 @@ data class Client (
     val email: String,
     val dateOfBirth: String
 )
-
-data class Date(
-    val day: Int,
-    val month: Int,
-    val year: Int,
-)

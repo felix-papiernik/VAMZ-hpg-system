@@ -16,7 +16,6 @@
 
 package com.example.inventory.ui.home
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,11 +30,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -67,8 +66,6 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.item.formatedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
-import java.time.Duration
-import java.util.Date
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -83,6 +80,8 @@ object HomeDestination : NavigationDestination {
 fun HomeScreen(
     navigateToItemEntry: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
+    navigateToClientEntry: () -> Unit,
+    navigateToClientUpdate : (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -118,8 +117,10 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             itemList = homeUiState.itemList,
-            clientsList = homeUiStateClients.clientsList,
             onItemClick = navigateToItemUpdate,
+            clientsList = homeUiStateClients.clientsList,
+            navigateToClientEntry = navigateToClientEntry,
+            onClientClick = navigateToClientUpdate,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
@@ -129,8 +130,10 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     itemList: List<Item>,
-    clientsList: List<Client>,
     onItemClick: (Int) -> Unit,
+    clientsList: List<Client>,
+    onClientClick: (Int) -> Unit,
+    navigateToClientEntry: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -153,30 +156,31 @@ private fun HomeBody(
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
         }
-        if (clientsList.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_clients_description),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(contentPadding),
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier,
+        ) {
+            Divider(
+                modifier = Modifier.height(8.dp)
             )
-        }
-        else {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier,
-            ) {
-                Divider(
-                    modifier = Modifier.height(8.dp)
+            if (clientsList.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_clients_description),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(contentPadding),
                 )
+            } else {
                 ClientsList(
                     clientsList = clientsList,
-                    onItemClick = {  },//TODO
+                    onClientClick = { onClientClick(it.id) },
                     contentPadding = contentPadding,
                     modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
                 )
             }
-
+            Button(onClick = navigateToClientEntry) {
+                Text(text = stringResource(R.string.add_client))
+            }
         }
     }
 }
@@ -204,7 +208,7 @@ private fun InventoryList(
 @Composable
 private fun ClientsList(
     clientsList: List<Client>,
-    onItemClick: (Client) -> Unit,
+    onClientClick: (Client) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -212,14 +216,12 @@ private fun ClientsList(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
-        items(items = clientsList, key = { it.id }) { item ->
+        items(items = clientsList, key = { it.id }) { client ->
             ListClientItem(
-                client = item,
+                client = client,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable {  }
-
-
+                    .clickable { onClientClick(client) }
                 )
         }
     }
@@ -262,18 +264,17 @@ private fun ListClientItem(
     client: Client, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+        Row(
+            modifier = Modifier.
+                padding(dimensionResource(id = R.dimen.padding_large))
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = client.firstName + " " + client.lastName,
-                style = MaterialTheme.typography.titleLarge,
-            )
-            Text(
-                text = client.dateOfBirth.toString(),
                 style = MaterialTheme.typography.titleLarge,
             )
         }
@@ -285,13 +286,16 @@ private fun ListClientItem(
 fun HomeBodyPreview() {
     InventoryTheme {
         HomeBody(
-            listOf(
+            itemList =  listOf(
                 Item(1, "Game", 100.0, 20), Item(2, "Pen", 200.0, 30), Item(3, "TV", 300.0, 50)
             ),
-            listOf(
+            clientsList =  listOf(
                 Client(1, "Félix", "Papiernik", "felixpapiernik42@gmail.com", dateOfBirth = "1.7.2002")
             ),
-            onItemClick = {})
+            onItemClick = {},
+            navigateToClientEntry = {},
+            onClientClick = {}
+        )
     }
 }
 
@@ -299,7 +303,8 @@ fun HomeBodyPreview() {
 @Composable
 fun HomeBodyEmptyListPreview() {
     InventoryTheme {
-        HomeBody(listOf(), listOf(), onItemClick = {})
+        HomeBody(
+            itemList =  listOf(), clientsList =  listOf(), onItemClick = {}, navigateToClientEntry = {}, onClientClick = {})
     }
 }
 

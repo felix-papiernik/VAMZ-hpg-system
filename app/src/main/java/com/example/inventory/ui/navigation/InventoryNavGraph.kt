@@ -23,6 +23,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.inventory.ui.client.details.ClientDetailsDestination
+import com.example.inventory.ui.client.details.ClientDetailsScreen
+import com.example.inventory.ui.client.entry.ClientEntryDestination
+import com.example.inventory.ui.client.entry.ClientEntryScreen
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
 import com.example.inventory.ui.item.ItemDetailsDestination
@@ -50,7 +54,28 @@ fun InventoryNavHost(
                 navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
                 navigateToItemUpdate = {
                     navController.navigate("${ItemDetailsDestination.route}/${it}")
-                }
+                },
+                navigateToClientEntry = { navController.navigate(ClientEntryDestination.route) },
+                navigateToClientUpdate = {
+                    navController.navigate("${ClientDetailsDestination.route}/${it}")
+                },
+            )
+        }
+        composable(route = ClientEntryDestination.route) {
+            ClientEntryScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = ClientDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(ClientDetailsDestination.clientIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            ClientDetailsScreen(
+                navigateToEditClient = { navController.navigate("${ClientDetailsDestination.route}/$it") },
+                navigateBack = { navController.navigateUp() }
             )
         }
         composable(route = ItemEntryDestination.route) {

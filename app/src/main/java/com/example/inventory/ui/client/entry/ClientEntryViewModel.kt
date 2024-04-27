@@ -37,6 +37,7 @@ class ClientEntryViewModel(private val clientsRepository: ClientsRepository) : V
         }
     }
 
+    //TODO doplniť validáciu pre email a dátum narodenia
     private fun validateInput(uiState: ClientDetails = clientUiState.clientDetails): Boolean {
         return with(uiState) {
             firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank()

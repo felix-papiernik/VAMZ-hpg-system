@@ -25,6 +25,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.inventory.ui.client.details.ClientDetailsDestination
 import com.example.inventory.ui.client.details.ClientDetailsScreen
+import com.example.inventory.ui.client.edit.ClientEditDestination
+import com.example.inventory.ui.client.edit.ClientEditScreen
 import com.example.inventory.ui.client.entry.ClientEntryDestination
 import com.example.inventory.ui.client.entry.ClientEntryScreen
 import com.example.inventory.ui.home.HomeDestination
@@ -67,6 +69,12 @@ fun InventoryNavHost(
                 onNavigateUp = { navController.navigateUp() }
             )
         }
+        composable(route = ItemEntryDestination.route) {
+            ItemEntryScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
         composable(
             route = ClientDetailsDestination.routeWithArgs,
             arguments = listOf(navArgument(ClientDetailsDestination.clientIdArg) {
@@ -74,14 +82,8 @@ fun InventoryNavHost(
             })
         ) {
             ClientDetailsScreen(
-                navigateToEditClient = { navController.navigate("${ClientDetailsDestination.route}/$it") },
+                navigateToEditClient = { navController.navigate("${ClientEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
-            )
-        }
-        composable(route = ItemEntryDestination.route) {
-            ItemEntryScreen(
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(
@@ -93,6 +95,17 @@ fun InventoryNavHost(
             ItemDetailsScreen(
                 navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = ClientEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(ClientEditDestination.clientIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            ClientEditScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(

@@ -49,4 +49,8 @@
     <string name="edit_client_title">Edit client</string>
     <string name="personal_information">Personal information</string>
     <string name="edit_personal_informations">edit personal informations</string>
+    <string name="edit_client">Edit client</string>
+    <string name="add_new_measurement">Add new measurement</string>
+    <string name="measurements">Measurements</string>
+    <string name="no_measurements">You haven\'t made measurement for this client yet. To add new measurement, click on +</string>
 </resources>

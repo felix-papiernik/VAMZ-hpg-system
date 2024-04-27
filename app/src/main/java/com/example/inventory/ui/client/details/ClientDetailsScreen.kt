@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -59,7 +60,6 @@ object ClientDetailsDestination : NavigationDestination {
     val routeWithArgs = "$route/{$clientIdArg}"
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClientDetailsScreen(
@@ -80,7 +80,7 @@ fun ClientDetailsScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navigateToEditClient(uiState.value.clientDetails.id) },
+                onClick = { /* TODO */ },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .padding(
@@ -89,8 +89,8 @@ fun ClientDetailsScreen(
                     )
             ) {
                 Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.edit_client_title),
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_new_measurement),
                 )
             }
         },
@@ -98,7 +98,7 @@ fun ClientDetailsScreen(
     ) { innerPadding ->
         ClientDetailsBody(
             clientDetailsUiState = uiState.value,
-            onUpdatePersonalInformation = { /*TODO*/ },
+            onUpdatePersonalInformation = { navigateToEditClient(uiState.value.clientDetails.id) },
             onDelete = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be deleted from the Database. This is because when config
@@ -132,17 +132,22 @@ private fun ClientDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-        ClientDetails(
+        ClientPersonalInformations(
+            onUpdatePersonalInformation = onUpdatePersonalInformation,
             client = clientDetailsUiState.clientDetails.toClient(),
             modifier = Modifier.fillMaxWidth()
         )
+        ClientMeasurements(
+            modifier = Modifier.fillMaxWidth()
+        )
+        /*
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.delete))
-        }
+        }*/
         if (deleteConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -157,9 +162,79 @@ private fun ClientDetailsBody(
 }
 
 @Composable
-fun ClientDetails(
-    client: Client,
+fun ClientMeasurements(
     modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier, colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+
+            Row(modifier = modifier,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.measurements),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(
+                            id = R.dimen
+                                .padding_medium
+                        )
+                    )
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { /*TODO navigate to the new measurements screen*/ }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add_new_measurement)
+                    )
+                }
+            }
+            Row {
+                if (false) {
+                    Text(
+                        text = stringResource(R.string.no_measurements),
+                        modifier = Modifier.padding(
+                            horizontal = dimensionResource(
+                                id = R.dimen
+                                    .padding_medium
+                            )
+                        )
+                    )
+                } else {
+                    Text(
+                        style = MaterialTheme.typography.bodyMedium,
+                        text = "28.4.2024       8,5/10b",
+                        modifier = Modifier.padding(
+                            horizontal = dimensionResource(
+                                id = R.dimen
+                                    .padding_medium
+                            )
+                        )
+                    )
+                    //TODO MeasurementsList that navigates to the measurements screen (update)
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun ClientPersonalInformations(
+    client: Client,
+    modifier: Modifier = Modifier,
+    onUpdatePersonalInformation: () -> Unit
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -188,7 +263,7 @@ fun ClientDetails(
                     )
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { /*TODO navigate to edit personal info*/ }) {
+                IconButton(onClick = onUpdatePersonalInformation ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = stringResource(R.string.edit_personal_informations)

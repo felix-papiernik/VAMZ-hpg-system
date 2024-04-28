@@ -1,13 +1,12 @@
 package com.example.inventory.data.measurement
 
-import com.example.inventory.data.client.Client
 import kotlinx.coroutines.flow.Flow
 
 
 /**
  * Repository that provides insert, update, delete, and retrieve of [Measurement] from a given data source.
  */
-interface MeasurementsRepository {
+interface HpgRepository {
     /**
      * Retrieve all the measurements from the the given data source.
      */

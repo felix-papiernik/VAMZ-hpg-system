@@ -4,16 +4,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.inventory.data.client.ClientDao
 import com.example.inventory.data.measurement.Measurement
-import com.example.inventory.data.measurement.MeasurementsRepository
+import com.example.inventory.data.measurement.HpgRepository
 import com.example.inventory.ui.components.getCurrentDate
-import java.time.LocalDate
 
 /**
  * ViewModel to validate and insert measurements in the Room database.
  */
-class MeasurementEntryViewModel(private val measurementsRepository: MeasurementsRepository) : ViewModel() {
+class MeasurementEntryViewModel(private val hpgRepository: HpgRepository) : ViewModel() {
 
     /**
      * Holds current measurement ui state
@@ -43,7 +41,7 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
     suspend fun saveMeasurement() {
 
         if (validateInput()) {
-            measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
+            hpgRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
         }
     }
 

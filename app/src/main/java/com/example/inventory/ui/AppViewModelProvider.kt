@@ -82,7 +82,7 @@ object AppViewModelProvider {
         // Initializer for MeasurementEntryViewModel
         initializer {
             MeasurementEntryViewModel(
-                inventoryApplication().container.measurementsRepository
+                inventoryApplication().container.hpgRepository
             )
         }
     }

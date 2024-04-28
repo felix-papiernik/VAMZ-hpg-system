@@ -40,19 +40,19 @@ fun DateInput(
  * Converts a date string in dd.mm.yyyy format to a long value.
  */
 fun DateToLong(date: String): Long {
-    val dateFormat = SimpleDateFormat("dd.mm.yyyy")
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     return dateFormat.parse(date).time
 }
 /**
  * Converts a long value to a date string in dd.mm.yyyy format.
  */
 fun LongToDateString(date: Long): String {
-    val dateFormat = SimpleDateFormat("dd.mm.yyyy")
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     return dateFormat.format(date)
 }
 
 fun isValidDate(date: String): Boolean {
-    val dateFormat = SimpleDateFormat("dd.mm.yyyy")
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     dateFormat.isLenient = false
     return try {
         dateFormat.parse(date)
@@ -64,6 +64,6 @@ fun isValidDate(date: String): Boolean {
 
 fun getCurrentDate(): String {
     val calendar = Calendar.getInstance()
-    val dateFormat = SimpleDateFormat("dd.mm.yyyy", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     return dateFormat.format(calendar.time)
 }

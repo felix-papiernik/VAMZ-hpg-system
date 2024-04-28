@@ -23,9 +23,9 @@ import com.example.inventory.data.client.OfflineClientsRepository
 import com.example.inventory.data.inventory.InventoryDatabase
 import com.example.inventory.data.inventory.ItemsRepository
 import com.example.inventory.data.inventory.OfflineItemsRepository
-import com.example.inventory.data.measurement.MeasurementDatabase
-import com.example.inventory.data.measurement.MeasurementsRepository
-import com.example.inventory.data.measurement.OfflineMeasurementsRepository
+import com.example.inventory.data.measurement.HpgDatabase
+import com.example.inventory.data.measurement.HpgRepository
+import com.example.inventory.data.measurement.OfflineHpgRepository
 
 /**
  * App container for Dependency injection.
@@ -33,7 +33,7 @@ import com.example.inventory.data.measurement.OfflineMeasurementsRepository
 interface AppContainer {
     val itemsRepository: ItemsRepository
     val clientsRepository: ClientsRepository
-    val measurementsRepository: MeasurementsRepository
+    val hpgRepository: HpgRepository
 }
 
 /**
@@ -50,14 +50,14 @@ class AppDataContainer(private val context: Context) : AppContainer {
      * Implementation for [ClientsRepository]
      */
     override val clientsRepository: ClientsRepository by lazy {
-        OfflineClientsRepository(ClientDatabase.getDatabase(context).clientDao())
+        OfflineClientsRepository(HpgDatabase.getDatabase(context).clientDao())
     }
 
     /**
-     * Implementation for [MeasurementsRepository]
+     * Implementation for [HpgRepository]
      */
-    override val measurementsRepository: MeasurementsRepository by lazy {
-        OfflineMeasurementsRepository(MeasurementDatabase.getDatabase(context).measurementDao())
+    override val hpgRepository: HpgRepository by lazy {
+        OfflineHpgRepository(HpgDatabase.getDatabase(context).measurementDao())
     }
 
 }

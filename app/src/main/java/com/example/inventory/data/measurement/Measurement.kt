@@ -22,7 +22,6 @@ import com.example.inventory.data.client.Client
 data class Measurement (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-
     val clientId: Int,//foreign key
     val date: String,
     val bodyWeightKg: Double,

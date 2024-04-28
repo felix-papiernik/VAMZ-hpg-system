@@ -12,6 +12,8 @@ import com.example.inventory.ui.client.entry.ClientDetails
 import com.example.inventory.ui.client.entry.ClientUiState
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientUiState
+import com.example.inventory.ui.components.LongToDateString
+import com.example.inventory.ui.components.isValidDate
 import com.example.inventory.ui.navigation.NavigationDestination
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -62,7 +64,8 @@ class ClientEditViewModel(
 
     private fun validateInput(uiState: ClientDetails = clientUiState.clientDetails): Boolean {
         return with(uiState) {
-            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank()
+            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
+                    email.contains("@") && isValidDate(dateOfBirth)
         }
     }
 }

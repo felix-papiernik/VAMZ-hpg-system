@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
  * Entity data class represents a single row in the database.
  */
 @Entity(tableName = "clients")
-data class Client (
+data class Client(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val firstName: String,

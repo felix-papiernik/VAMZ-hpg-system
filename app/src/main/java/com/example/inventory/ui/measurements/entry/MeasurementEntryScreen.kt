@@ -1,4 +1,4 @@
-package com.example.inventory.ui.client.entry
+package com.example.inventory.ui.measurements.entry
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,45 +21,50 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
-import com.example.inventory.ui.components.DateInput
+import com.example.inventory.ui.components.getCurrentDate
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
 
-object ClientEntryDestination : NavigationDestination {
-    override val route = "client_entry"
-    override val titleRes = R.string.add_client
+object MeasurementEntryDestination : NavigationDestination {
+    override val route = "measurement_entry"
+    override val titleRes = R.string.add_measurement
+    const val clientIdArg = "clientId"//todo valid? -> set clientId in measurement id
+    val routeWithArgs = "${route}/{$clientIdArg}"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClientEntryScreen(
+fun MeasurementEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
-    viewModel: ClientEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: MeasurementEntryViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    clientId: Int
 ) {
+    viewModel.updateUiState(MeasurementDetails(
+        date = getCurrentDate(),
+        clientId = clientId)
+    )
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             InventoryTopAppBar(
-                title = stringResource(ClientEntryDestination.titleRes),
+                title = stringResource(MeasurementEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
             )
         }
     ) { innerPadding ->
-        ClientEntryBody(
-            clientUiState = viewModel.clientUiState,
-            onClientValueChange = viewModel::updateUiState,
+        MeasurementEntryBody(
+            measurementUiState = viewModel.measurementUiState,
+            onMeasurementValueChange = viewModel::updateUiState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.saveClient()
+                    viewModel.saveMeasurement()
                     navigateBack()
                 }
             },
@@ -76,9 +81,9 @@ fun ClientEntryScreen(
 }
 
 @Composable
-fun ClientEntryBody(
-    clientUiState: ClientUiState,
-    onClientValueChange: (ClientDetails) -> Unit,
+fun MeasurementEntryBody(
+    measurementUiState: MeasurementUiState,
+    onMeasurementValueChange: (MeasurementDetails) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -86,14 +91,13 @@ fun ClientEntryBody(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
     ) {
-        ClientInputForm(
-            clientDetails = clientUiState.clientDetails,
-            onValueChange = onClientValueChange,
+        MeasurementInputForm(
+            measurementDetails = measurementUiState.measurementDetails,
+            onMeasurementValueChange = onMeasurementValueChange,
             modifier = Modifier.fillMaxWidth()
         )
         Button(
             onClick = onSaveClick,
-            enabled = clientUiState.isEntryValid,
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -103,80 +107,38 @@ fun ClientEntryBody(
 }
 
 @Composable
-fun ClientInputForm(
-    clientDetails: ClientDetails,
+fun MeasurementInputForm(
+    measurementDetails: MeasurementDetails,
+    onMeasurementValueChange: (MeasurementDetails) -> Unit,
     modifier: Modifier = Modifier,
-    onValueChange: (ClientDetails) -> Unit = {},
-    enabled: Boolean = true
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         OutlinedTextField(
-            value = clientDetails.firstName,
-            onValueChange = { onValueChange(clientDetails.copy(firstName = it)) },
-            label = { Text(stringResource(R.string.client_firstname)) },
+            value = measurementDetails.bodyWeightKg,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(bodyWeightKg = it)) },
+            label = { Text(stringResource(R.string.weight_in_kg)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
             singleLine = true
         )
         OutlinedTextField(
-            value = clientDetails.lastName,
-            onValueChange = { onValueChange(clientDetails.copy(lastName = it)) },
-            label = { Text(stringResource(R.string.client_lastname)) },
+            value = measurementDetails.leanMuscleMassKg,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(leanMuscleMassKg = it)) },
+            label = { Text(stringResource(R.string.lean_muscle_mass_in_kg)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
             singleLine = true
         )
-        OutlinedTextField(
-            value = clientDetails.email,
-            onValueChange = { onValueChange(clientDetails.copy(email = it)) },
-            label = { Text(stringResource(R.string.client_email)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        DateInput(
-            value = clientDetails.dateOfBirth,
-            onValueChange = { onValueChange(clientDetails.copy(dateOfBirth = it)) },
-            labelResId = R.string.client_date_of_birth_
-        )
-        if (enabled) {
-            Text(
-                text = stringResource(R.string.required_fields),
-                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ClientEntryScreenPreview() {
-    InventoryTheme {
-        ClientEntryBody(clientUiState = ClientUiState(
-            ClientDetails(
-                firstName = "Félix",
-                lastName = "Papiernik",
-                email = "felixpapiernik42@gmail.com",
-                dateOfBirth = "01.01.2000"
-            )
-        ), onClientValueChange = {}, onSaveClick = {})
     }
 }

@@ -3,7 +3,7 @@ package com.example.inventory.data.client
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Repository that provides insert, update?, delete, and retrieve of [Client] from a given data source.
+ * Repository that provides insert, update, delete, and retrieve of [Client] from a given data source.
  */
 interface ClientsRepository {
     /**

@@ -30,6 +30,7 @@ import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.item.ItemEntryViewModel
+import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire HPG app
@@ -76,6 +77,12 @@ object AppViewModelProvider {
             ClientEditViewModel(
                 this.createSavedStateHandle(),
                 inventoryApplication().container.clientsRepository
+            )
+        }
+        // Initializer for MeasurementEntryViewModel
+        initializer {
+            MeasurementEntryViewModel(
+                inventoryApplication().container.measurementsRepository
             )
         }
     }

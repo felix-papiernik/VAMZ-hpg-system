@@ -8,16 +8,11 @@ import com.example.inventory.data.inventory.ItemsRepository
 import com.example.inventory.ui.client.entry.ClientDetails
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
-import com.example.inventory.ui.item.ItemDetails
-import com.example.inventory.ui.item.ItemDetailsDestination
-import com.example.inventory.ui.item.toItem
-import com.example.inventory.ui.item.toItemDetails
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 
 /**
  * ViewModel to retrieve, update and delete an item from the [ItemsRepository]'s data source.

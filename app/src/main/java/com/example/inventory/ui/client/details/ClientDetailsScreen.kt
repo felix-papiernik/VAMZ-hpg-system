@@ -24,7 +24,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -63,10 +62,11 @@ object ClientDetailsDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClientDetailsScreen(
-    navigateToEditClient: (Int) -> Unit,
+    navigateToEditClientPersonalInformation: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ClientDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: ClientDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navigateToMeasurementEntry: () -> Unit
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -98,7 +98,7 @@ fun ClientDetailsScreen(
     ) { innerPadding ->
         ClientDetailsBody(
             clientDetailsUiState = uiState.value,
-            onUpdatePersonalInformation = { navigateToEditClient(uiState.value.clientDetails.id) },
+            onUpdatePersonalInformation = { navigateToEditClientPersonalInformation(uiState.value.clientDetails.id) },
             onDelete = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be deleted from the Database. This is because when config
@@ -109,6 +109,7 @@ fun ClientDetailsScreen(
                     navigateBack()
                 }
             },
+            navigateToMeasurementEntry = navigateToMeasurementEntry,
             modifier = Modifier
                 .padding(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
@@ -125,19 +126,21 @@ private fun ClientDetailsBody(
     clientDetailsUiState: ClientDetailsUiState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
-    onUpdatePersonalInformation: () -> Unit
+    onUpdatePersonalInformation: () -> Unit,
+    navigateToMeasurementEntry: () -> Unit
 ) {
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-        ClientPersonalInformations(
+        ClientPersonalInformation(
             onUpdatePersonalInformation = onUpdatePersonalInformation,
             client = clientDetailsUiState.clientDetails.toClient(),
             modifier = Modifier.fillMaxWidth()
         )
         ClientMeasurements(
+            navigateToMeasurementEntry = navigateToMeasurementEntry,
             modifier = Modifier.fillMaxWidth()
         )
         /*
@@ -163,7 +166,8 @@ private fun ClientDetailsBody(
 
 @Composable
 fun ClientMeasurements(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToMeasurementEntry: () -> Unit
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -193,7 +197,7 @@ fun ClientMeasurements(
                     )
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { /*TODO navigate to the new measurements screen*/ }) {
+                IconButton(onClick = navigateToMeasurementEntry) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(R.string.add_new_measurement)
@@ -231,7 +235,18 @@ fun ClientMeasurements(
 }
 
 @Composable
-fun ClientPersonalInformations(
+fun MeasurementsList(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        //TODO
+    }
+}
+
+@Composable
+fun ClientPersonalInformation(
     client: Client,
     modifier: Modifier = Modifier,
     onUpdatePersonalInformation: () -> Unit
@@ -340,7 +355,9 @@ fun ItemDetailsScreenPreview() {
                     "01.01.2000"
                 ).toClientDetails()
             ),
-            onDelete = {}
-        ) { /*TODO*/ }
+            onDelete = {},
+            onUpdatePersonalInformation = { },
+            navigateToMeasurementEntry = {}
+        )
     }
 }

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.inventory.data.client.Client
 import com.example.inventory.data.client.ClientsRepository
 import com.example.inventory.data.inventory.Item
+import com.example.inventory.ui.components.LongToDateString
+import com.example.inventory.ui.components.isValidDate
 
 /**
  * ViewModel to validate and insert clients in the Room database.
@@ -37,14 +39,15 @@ class ClientEntryViewModel(private val clientsRepository: ClientsRepository) : V
         }
     }
 
-    //TODO doplniť validáciu pre email a dátum narodenia
     private fun validateInput(uiState: ClientDetails = clientUiState.clientDetails): Boolean {
         return with(uiState) {
-            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank()
+            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
+                    email.contains("@") && isValidDate(dateOfBirth)
         }
     }
 }
 
+//These functions and data classes are used to separate the UI state from the database model.
 
 /**
  * Represents Ui State for a Client.
@@ -59,7 +62,7 @@ data class ClientDetails(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
-    val dateOfBirth: String = ""
+    val dateOfBirth: String = "",
 )
 
 /**

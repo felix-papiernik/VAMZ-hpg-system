@@ -37,6 +37,8 @@ import com.example.inventory.ui.item.ItemEditDestination
 import com.example.inventory.ui.item.ItemEditScreen
 import com.example.inventory.ui.item.ItemEntryDestination
 import com.example.inventory.ui.item.ItemEntryScreen
+import com.example.inventory.ui.measurements.entry.MeasurementEntryDestination
+import com.example.inventory.ui.measurements.entry.MeasurementEntryScreen
 
 /**
  * Provides Navigation graph for the application.
@@ -81,9 +83,29 @@ fun InventoryNavHost(
                 type = NavType.IntType
             })
         ) {
+                backStackEntry ->
+            val clientId = backStackEntry.arguments?.getInt(ClientDetailsDestination.clientIdArg)
             ClientDetailsScreen(
-                navigateToEditClient = { navController.navigate("${ClientEditDestination.route}/$it") },
-                navigateBack = { navController.navigateUp() }
+                navigateToEditClientPersonalInformation = { navController.navigate("${ClientEditDestination.route}/$it") },
+                navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/${clientId}") },
+                navigateBack = { navController.navigateUp() },
+                )
+                /*navigateToMeasurementUpdate = {
+                navController.navigate("${MeasurementDetailsDestination.route}/${it}")
+                },*/
+
+        }
+        composable(
+            route = MeasurementEntryDestination.routeWithArgs,
+            arguments = listOf(navArgument(MeasurementEntryDestination.clientIdArg) {
+                type = NavType.IntType
+            })
+        ) {backStackEntry ->
+            val clientId = backStackEntry.arguments?.getInt(MeasurementEntryDestination.clientIdArg)
+                MeasurementEntryScreen(
+                clientId = clientId ?: -1,
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(

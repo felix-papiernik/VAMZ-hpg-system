@@ -89,7 +89,7 @@ fun ClientDetailsScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* TODO */ },
+                onClick = { /* TODO decide if even needed */ },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .padding(

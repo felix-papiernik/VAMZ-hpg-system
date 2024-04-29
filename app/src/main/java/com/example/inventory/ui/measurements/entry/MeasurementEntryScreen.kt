@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 object MeasurementEntryDestination : NavigationDestination {
     override val route = "measurement_entry"
     override val titleRes = R.string.add_measurement
-    const val clientIdArg = "clientId"//todo valid? -> set clientId in measurement id
+    const val clientIdArg = "clientId"
     val routeWithArgs = "${route}/{$clientIdArg}"
 }
 

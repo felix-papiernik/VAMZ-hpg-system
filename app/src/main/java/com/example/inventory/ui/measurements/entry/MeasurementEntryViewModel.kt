@@ -63,7 +63,7 @@ data class MeasurementUiState(
 )
 
 data class MeasurementDetails(
-    val id: Int = 0,//TODO DECIDE
+    val id: Int = 0,
     val clientId: Int = 0,
     val date: String = "",
     val bodyWeightKg: String = "",
@@ -78,7 +78,7 @@ data class MeasurementDetails(
  * Extension function to convert [MeasurementUiState] to [Measurement].
  */
 fun MeasurementDetails.toMeasurement(): Measurement = Measurement(
-    id = id,//TODO DECIDE
+    id = id,
     clientId = clientId,
     date = date,
     bodyWeightKg = bodyWeightKg.toDoubleOrNull() ?: 0.0,

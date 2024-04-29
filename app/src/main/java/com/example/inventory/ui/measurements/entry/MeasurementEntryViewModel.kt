@@ -32,14 +32,13 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
      */
     fun updateUiState(measurementDetails: MeasurementDetails) {
         measurementUiState =
-            MeasurementUiState(measurementDetails = measurementDetails, isMeasurementCompleted = validateInput(measurementDetails))
+            MeasurementUiState(measurementDetails = measurementDetails, isMeasurementValid = validateInput(measurementDetails))
     }
 
     /**
      * Inserts an [Measurement] in the Room database
      */
     suspend fun saveMeasurement() {
-
         if (validateInput()) {
             measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
         }
@@ -47,7 +46,12 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
 
     private fun validateInput(uiState: MeasurementDetails = measurementUiState.measurementDetails): Boolean {
         return with(uiState) {
-            bodyWeightKg.isNotBlank() && leanMuscleMassKg.isNotBlank()
+            bodyWeightKg.isNotEmpty() && bodyWeightKg.toDoubleOrNull() != null
+            && leanMuscleMassKg.isNotEmpty() && leanMuscleMassKg.toDoubleOrNull() != null
+            && bodyFatKg.isNotEmpty() && bodyFatKg.toDoubleOrNull() != null
+            && visceralFat.isNotEmpty() && visceralFat.toDoubleOrNull() != null
+            && mineralsKg.isNotEmpty() && mineralsKg.toDoubleOrNull() != null
+            && metabolicAge.isNotEmpty() && metabolicAge.toDoubleOrNull() != null
         }
     }
 
@@ -59,7 +63,7 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
  */
 data class MeasurementUiState(
     val measurementDetails: MeasurementDetails = MeasurementDetails(),
-    val isMeasurementCompleted : Boolean = false
+    val isMeasurementValid : Boolean = false
 )
 
 data class MeasurementDetails(
@@ -94,7 +98,7 @@ fun MeasurementDetails.toMeasurement(): Measurement = Measurement(
  */
 fun Measurement.toMeasurementUiState(isMeasurementCompleted: Boolean = false): MeasurementUiState = MeasurementUiState(
     measurementDetails = this.toMeasurementDetails(),
-    isMeasurementCompleted = isMeasurementCompleted
+    isMeasurementValid = isMeasurementCompleted
 )
 
 /**

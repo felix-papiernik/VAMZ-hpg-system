@@ -30,14 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.R.string
-import com.example.inventory.ui.navigation.InventoryNavHost
+import com.example.inventory.ui.navigation.HpgNavHost
 
 /**
  * Top level composable that represents screens for the application.
  */
 @Composable
 fun InventoryApp(navController: NavHostController = rememberNavController()) {
-    InventoryNavHost(navController = navController)
+    HpgNavHost(navController = navController)
 }
 
 /**

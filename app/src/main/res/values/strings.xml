@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Inventory</string>
+    <string name="app_name">HPG system</string>
     <string name="attention">Attention</string>
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
@@ -58,4 +58,10 @@
     <string name="add_measurement">Add new measurement</string>
     <string name="weight_in_kg">Weight in kg</string>
     <string name="lean_muscle_mass_in_kg">Lean muscle mass in kg</string>
+    <string name="body_fat_in_kg">Body fat in kg</string>
+    <string name="visceral_fat">Visceral fat cm^2</string>
+    <string name="minerals_in_kg">Minerals in kg</string>
+    <string name="metabolic_age">Metabolic age</string>
+    <string name="please_enter_a_valid_number">Please enter a valid number that\'s greater or equal to 0</string>
+    <string name="measurement_detail_title">Measurement detail</string>
 </resources>

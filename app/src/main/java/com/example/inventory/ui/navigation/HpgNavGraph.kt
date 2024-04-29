@@ -37,6 +37,8 @@ import com.example.inventory.ui.item.ItemEditDestination
 import com.example.inventory.ui.item.ItemEditScreen
 import com.example.inventory.ui.item.ItemEntryDestination
 import com.example.inventory.ui.item.ItemEntryScreen
+import com.example.inventory.ui.measurements.details.MeasurementDetailsDestination
+import com.example.inventory.ui.measurements.details.MeasurementDetailsScreen
 import com.example.inventory.ui.measurements.entry.MeasurementEntryDestination
 import com.example.inventory.ui.measurements.entry.MeasurementEntryScreen
 
@@ -44,7 +46,7 @@ import com.example.inventory.ui.measurements.entry.MeasurementEntryScreen
  * Provides Navigation graph for the application.
  */
 @Composable
-fun InventoryNavHost(
+fun HpgNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
@@ -83,17 +85,15 @@ fun InventoryNavHost(
                 type = NavType.IntType
             })
         ) {
-                backStackEntry ->
+            backStackEntry ->
             val clientId = backStackEntry.arguments?.getInt(ClientDetailsDestination.clientIdArg)
             ClientDetailsScreen(
                 navigateToEditClientPersonalInformation = { navController.navigate("${ClientEditDestination.route}/$it") },
-                navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/${clientId}") },
-                navigateBack = { navController.navigateUp() },
-                )
-                /*navigateToMeasurementUpdate = {
-                navController.navigate("${MeasurementDetailsDestination.route}/${it}")
-                },*/
-
+                navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/$it") },
+                //navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/${clientId}") }, TODO ASK
+                //navigateToMeasurementUpdate = { navController.navigate("${MeasurementDetailsDestination.route}/${clientId}/${measurementId}") }, TODO ASK
+                navigateBack = { navController.navigateUp() }
+            )
         }
         composable(
             route = MeasurementEntryDestination.routeWithArgs,
@@ -106,6 +106,18 @@ fun InventoryNavHost(
                 clientId = clientId ?: -1,
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = MeasurementDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(MeasurementDetailsDestination.clientIdArg) {
+                type = NavType.IntType
+            })
+        ) {backStackEntry ->
+            val clientId = backStackEntry.arguments?.getInt(MeasurementEntryDestination.clientIdArg)
+            MeasurementDetailsScreen(
+                navigateToEditItem = {},
+                navigateBack = { navController.popBackStack() },
             )
         }
         composable(

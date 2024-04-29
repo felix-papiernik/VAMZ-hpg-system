@@ -99,7 +99,8 @@ fun MeasurementEntryBody(
         Button(
             onClick = onSaveClick,
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = measurementUiState.isMeasurementValid
         ) {
             Text(text = stringResource(R.string.save_action))
         }
@@ -126,7 +127,8 @@ fun MeasurementInputForm(
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            isError = measurementDetails.bodyWeightKg.isNotEmpty() && measurementDetails.bodyWeightKg.toDoubleOrNull() == null
         )
         OutlinedTextField(
             value = measurementDetails.leanMuscleMassKg,
@@ -138,7 +140,60 @@ fun MeasurementInputForm(
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            isError = measurementDetails.leanMuscleMassKg.isNotEmpty() && measurementDetails.leanMuscleMassKg.toDoubleOrNull() == null
+        )
+        OutlinedTextField(
+            value = measurementDetails.bodyFatKg,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(bodyFatKg = it)) },
+            label = { Text(stringResource(R.string.body_fat_in_kg)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            isError = measurementDetails.bodyFatKg.isNotEmpty() && measurementDetails.bodyFatKg.toDoubleOrNull() == null
+        )
+        OutlinedTextField(
+            value = measurementDetails.visceralFat,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(visceralFat = it)) },
+            label = { Text(stringResource(R.string.visceral_fat)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            isError = measurementDetails.visceralFat.isNotEmpty() && measurementDetails.visceralFat.toDoubleOrNull() == null
+        )
+        OutlinedTextField(
+            value = measurementDetails.mineralsKg,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(mineralsKg = it)) },
+            label = { Text(stringResource(R.string.minerals_in_kg)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            isError = measurementDetails.mineralsKg.isNotEmpty() && measurementDetails.mineralsKg.toDoubleOrNull() == null
+        )
+        OutlinedTextField(
+            value = measurementDetails.metabolicAge,
+            onValueChange = { onMeasurementValueChange(measurementDetails.copy(metabolicAge = it)) },
+            label = { Text(stringResource(R.string.metabolic_age)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            isError = measurementDetails.metabolicAge.isNotEmpty() && measurementDetails.metabolicAge.toDoubleOrNull() == null
         )
     }
 }

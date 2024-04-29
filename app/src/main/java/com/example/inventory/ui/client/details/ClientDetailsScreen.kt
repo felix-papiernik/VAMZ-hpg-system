@@ -74,7 +74,7 @@ fun ClientDetailsScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ClientDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    navigateToMeasurementEntry: () -> Unit
+    navigateToMeasurementEntry: (Int) -> Unit
 ) {
     val clientDetailsUiState = viewModel.clientDetailsStateFlow.collectAsState()
     val measurementsUiState = viewModel.measurementsStateFlow.collectAsState()
@@ -118,7 +118,7 @@ fun ClientDetailsScreen(
                     navigateBack()
                 }
             },
-            navigateToMeasurementEntry = navigateToMeasurementEntry,
+            navigateToMeasurementEntry = { navigateToMeasurementEntry(clientDetailsUiState.value.clientDetails.id) },
             measurementsList = measurementsUiState.value,
             modifier = Modifier
                 .padding(

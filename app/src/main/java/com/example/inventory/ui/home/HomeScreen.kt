@@ -141,7 +141,7 @@ private fun HomeBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        if (itemList.isEmpty()) {
+        /*if (itemList.isEmpty()) {
             Text(
                 text = stringResource(R.string.no_item_description),
                 textAlign = TextAlign.Center,
@@ -155,13 +155,13 @@ private fun HomeBody(
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
-        }
+        }*/
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier,
         ) {
             Divider(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(4.dp)
             )
             if (clientsList.isEmpty()) {
                 Text(

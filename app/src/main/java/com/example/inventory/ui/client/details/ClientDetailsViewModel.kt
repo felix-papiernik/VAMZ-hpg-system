@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.client.ClientsRepository
 import com.example.inventory.data.inventory.ItemsRepository
+import com.example.inventory.data.measurement.Measurement
+import com.example.inventory.data.measurement.MeasurementsRepository
 import com.example.inventory.ui.client.entry.ClientDetails
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.stateIn
 class ClientDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val clientsRepository: ClientsRepository,
+    private val measurementsRepository: MeasurementsRepository,
 ) : ViewModel() {
 
     private val clientId: Int = checkNotNull(savedStateHandle[ClientDetailsDestination.clientIdArg])
@@ -28,7 +31,7 @@ class ClientDetailsViewModel(
      * Holds the item details ui state. The data is retrieved from [ItemsRepository] and mapped to
      * the UI state.
      */
-    val uiState: StateFlow<ClientDetailsUiState> =
+    val clientDetailsStateFlow: StateFlow<ClientDetailsUiState> =
         clientsRepository.getClientStream(clientId)
             .filterNotNull()
             .map {
@@ -39,11 +42,19 @@ class ClientDetailsViewModel(
                 initialValue = ClientDetailsUiState()
             )
 
+    val measurementsStateFlow: StateFlow<List<Measurement>> =
+        measurementsRepository.getAllClientMeasurementsStream(clientId)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
+                initialValue = emptyList()
+            )
+
     /**
      * Deletes the client from the [ClientsRepository]'s data source.
      */
     suspend fun deleteItem() {
-        clientsRepository.deleteClient(uiState.value.clientDetails.toClient())
+        clientsRepository.deleteClient(clientDetailsStateFlow.value.clientDetails.toClient())
     }
 
     companion object {

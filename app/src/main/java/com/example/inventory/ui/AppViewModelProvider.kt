@@ -69,7 +69,8 @@ object AppViewModelProvider {
         initializer {
             ClientDetailsViewModel(
                 this.createSavedStateHandle(),
-                inventoryApplication().container.clientsRepository
+                inventoryApplication().container.clientsRepository,
+                inventoryApplication().container.measurementsRepository,
             )
         }
         // Initializer for ClientEditViewModel
@@ -82,7 +83,7 @@ object AppViewModelProvider {
         // Initializer for MeasurementEntryViewModel
         initializer {
             MeasurementEntryViewModel(
-                inventoryApplication().container.hpgRepository
+                inventoryApplication().container.measurementsRepository
             )
         }
     }

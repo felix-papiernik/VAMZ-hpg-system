@@ -1,6 +1,7 @@
 package com.example.inventory.ui.client.details
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -40,14 +44,18 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.client.Client
+import com.example.inventory.data.inventory.Item
+import com.example.inventory.data.measurement.Measurement
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
 import com.example.inventory.ui.item.DeleteConfirmationDialog
+import com.example.inventory.ui.item.formatedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
@@ -68,7 +76,8 @@ fun ClientDetailsScreen(
     viewModel: ClientDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
     navigateToMeasurementEntry: () -> Unit
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val clientDetailsUiState = viewModel.clientDetailsStateFlow.collectAsState()
+    val measurementsUiState = viewModel.measurementsStateFlow.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
@@ -97,8 +106,8 @@ fun ClientDetailsScreen(
         modifier = modifier,
     ) { innerPadding ->
         ClientDetailsBody(
-            clientDetailsUiState = uiState.value,
-            onUpdatePersonalInformation = { navigateToEditClientPersonalInformation(uiState.value.clientDetails.id) },
+            clientDetailsUiState = clientDetailsUiState.value,
+            onUpdatePersonalInformation = { navigateToEditClientPersonalInformation(clientDetailsUiState.value.clientDetails.id) },
             onDelete = {
                 // Note: If the user rotates the screen very fast, the operation may get cancelled
                 // and the item may not be deleted from the Database. This is because when config
@@ -110,6 +119,7 @@ fun ClientDetailsScreen(
                 }
             },
             navigateToMeasurementEntry = navigateToMeasurementEntry,
+            measurementsList = measurementsUiState.value,
             modifier = Modifier
                 .padding(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
@@ -127,7 +137,8 @@ private fun ClientDetailsBody(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     onUpdatePersonalInformation: () -> Unit,
-    navigateToMeasurementEntry: () -> Unit
+    navigateToMeasurementEntry: () -> Unit,
+    measurementsList: List<Measurement>
 ) {
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -140,6 +151,7 @@ private fun ClientDetailsBody(
             modifier = Modifier.fillMaxWidth()
         )
         ClientMeasurements(
+            measurementsList = measurementsList,
             navigateToMeasurementEntry = navigateToMeasurementEntry,
             modifier = Modifier.fillMaxWidth()
         )
@@ -167,7 +179,8 @@ private fun ClientDetailsBody(
 @Composable
 fun ClientMeasurements(
     modifier: Modifier = Modifier,
-    navigateToMeasurementEntry: () -> Unit
+    navigateToMeasurementEntry: () -> Unit,
+    measurementsList: List<Measurement>
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -200,34 +213,27 @@ fun ClientMeasurements(
                 IconButton(onClick = navigateToMeasurementEntry) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.add_new_measurement)
+                        contentDescription = stringResource(R.string.add_new_measurement),
+                        modifier = Modifier.size(32.dp)
                     )
                 }
             }
-            Row {
-                if (false) {
-                    Text(
-                        text = stringResource(R.string.no_measurements),
-                        modifier = Modifier.padding(
-                            horizontal = dimensionResource(
-                                id = R.dimen
-                                    .padding_medium
-                            )
+            if (measurementsList.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_measurements),
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(
+                            id = R.dimen
+                                .padding_medium
                         )
                     )
-                } else {
-                    Text(
-                        style = MaterialTheme.typography.bodyMedium,
-                        text = "28.4.2024       8,5/10b",
-                        modifier = Modifier.padding(
-                            horizontal = dimensionResource(
-                                id = R.dimen
-                                    .padding_medium
-                            )
-                        )
-                    )
-                    //TODO MeasurementsList that navigates to the measurements screen (update)
-                }
+                )
+            } else {
+                MeasurementsList(
+                    measurementsList = measurementsList,
+                    onItemClick = { /* TODO */},
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
 
@@ -236,12 +242,41 @@ fun ClientMeasurements(
 
 @Composable
 fun MeasurementsList(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: (Measurement) -> Unit,
+    measurementsList: List<Measurement>
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
-        //TODO
+        measurementsList.forEach { item ->
+            MeasurementsListItem(item = item,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onItemClick(item) })
+        }
+    }
+}
+
+@Composable
+private fun MeasurementsListItem(
+    item: Measurement, modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            Text(
+                text = item.date,
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = item.id.toString(),
+            )
+        }
     }
 }
 
@@ -357,7 +392,8 @@ fun ItemDetailsScreenPreview() {
             ),
             onDelete = {},
             onUpdatePersonalInformation = { },
-            navigateToMeasurementEntry = {}
+            navigateToMeasurementEntry = {},
+            measurementsList = emptyList()
         )
     }
 }

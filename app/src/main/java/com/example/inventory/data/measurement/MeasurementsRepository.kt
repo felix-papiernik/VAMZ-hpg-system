@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Repository that provides insert, update, delete, and retrieve of [Measurement] from a given data source.
  */
-interface HpgRepository {
+interface MeasurementsRepository {
     /**
      * Retrieve all the measurements from the the given data source.
      */

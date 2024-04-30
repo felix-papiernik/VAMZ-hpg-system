@@ -23,12 +23,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.components.DateInput
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
 
 object ClientEntryDestination : NavigationDestination {
@@ -47,7 +47,7 @@ fun ClientEntryScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(ClientEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
@@ -169,7 +169,7 @@ fun ClientInputForm(
 @Preview(showBackground = true)
 @Composable
 private fun ClientEntryScreenPreview() {
-    InventoryTheme {
+    HpgTheme {
         ClientEntryBody(clientUiState = ClientUiState(
             ClientDetails(
                 firstName = "Félix",

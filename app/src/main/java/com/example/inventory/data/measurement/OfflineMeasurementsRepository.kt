@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 class OfflineMeasurementsRepository(private val measurementDao: MeasurementDao) : MeasurementsRepository {
     override fun getAllClientMeasurementsStream(clientId: Int): Flow<List<Measurement>> = measurementDao.getAllClientMeasurements(clientId)
 
-    override fun getMeasurementStream(id: Int, clientId: Int): Flow<Measurement> = measurementDao.getMeasurement(id, clientId)
+    override fun getMeasurementStream(id: Int): Flow<Measurement> = measurementDao.getMeasurement(id)
 
     override suspend fun insertMeasurement(measurement: Measurement) = measurementDao.insert(measurement)
 

@@ -58,14 +58,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.client.Client
 import com.example.inventory.data.inventory.Item
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.item.formatedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -92,7 +92,7 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior
@@ -100,7 +100,7 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = navigateToItemEntry,
+                onClick = navigateToClientEntry,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .padding(
@@ -284,7 +284,7 @@ private fun ListClientItem(
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyPreview() {
-    InventoryTheme {
+    HpgTheme {
         HomeBody(
             itemList =  listOf(
                 Item(1, "Game", 100.0, 20), Item(2, "Pen", 200.0, 30), Item(3, "TV", 300.0, 50)
@@ -302,7 +302,7 @@ fun HomeBodyPreview() {
 @Preview(showBackground = true)
 @Composable
 fun HomeBodyEmptyListPreview() {
-    InventoryTheme {
+    HpgTheme {
         HomeBody(
             itemList =  listOf(), clientsList =  listOf(), onItemClick = {}, navigateToClientEntry = {}, onClientClick = {})
     }
@@ -311,7 +311,7 @@ fun HomeBodyEmptyListPreview() {
 @Preview(showBackground = true)
 @Composable
 fun InventoryItemPreview() {
-    InventoryTheme {
+    HpgTheme {
         InventoryItem(
             Item(1, "Game", 100.0, 20),
         )
@@ -321,7 +321,7 @@ fun InventoryItemPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ListClientItemPreview() {
-    InventoryTheme {
+    HpgTheme {
         ListClientItem(
             Client(1, "Félix", "Papiernik", "felixpapiernik42@gmail.com", dateOfBirth = "1.7.2002"),
         )

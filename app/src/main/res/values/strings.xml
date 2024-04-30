@@ -56,7 +56,7 @@
     <string name="date_format_label">" in format DD.MM.YYYY"</string>
     <string name="dd_mm_yyyy">DD.MM.YYYY</string>
     <string name="add_measurement">Add new measurement</string>
-    <string name="weight_in_kg">Weight in kg</string>
+    <string name="bodyweight_in_kg">Weight in kg</string>
     <string name="lean_muscle_mass_in_kg">Lean muscle mass in kg</string>
     <string name="body_fat_in_kg">Body fat in kg</string>
     <string name="visceral_fat">Visceral fat cm^2</string>
@@ -64,4 +64,9 @@
     <string name="metabolic_age">Metabolic age</string>
     <string name="please_enter_a_valid_number">Please enter a valid number that\'s greater or equal to 0</string>
     <string name="measurement_detail_title">Measurement detail</string>
+    <string name="edit_measurement">Edit measurement</string>
+    <string name="date_of_measurement">Date of measurement</string>
+    <string name="label1">label2</string>
+    <string name="label2">label2</string>
+    <string name="label3">label3</string>
 </resources>

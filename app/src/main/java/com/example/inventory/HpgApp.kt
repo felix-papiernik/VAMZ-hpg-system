@@ -22,7 +22,9 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,12 +33,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.inventory.R.string
 import com.example.inventory.ui.navigation.HpgNavHost
+import com.example.inventory.ui.theme.HpgTheme
 
 /**
  * Top level composable that represents screens for the application.
  */
 @Composable
-fun InventoryApp(navController: NavHostController = rememberNavController()) {
+fun HpgApp(navController: NavHostController = rememberNavController()) {
     HpgNavHost(navController = navController)
 }
 
@@ -45,7 +48,7 @@ fun InventoryApp(navController: NavHostController = rememberNavController()) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InventoryTopAppBar(
+fun HpgTopAppBar(
     title: String,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
@@ -65,6 +68,11 @@ fun InventoryTopAppBar(
                     )
                 }
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
     )
 }

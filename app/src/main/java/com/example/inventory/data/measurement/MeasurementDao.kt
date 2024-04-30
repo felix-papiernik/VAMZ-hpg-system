@@ -17,8 +17,8 @@ interface MeasurementDao {
     @Query("select * from measurements where clientId = :clientId")
     fun getAllClientMeasurements(clientId: Int ): Flow<List<Measurement>>
 
-    @Query("SELECT * from measurements WHERE id = :id and clientId = :clientId")
-    fun getMeasurement(id: Int, clientId: Int): Flow<Measurement>
+    @Query("SELECT * from measurements WHERE id = :id")
+    fun getMeasurement(id: Int): Flow<Measurement>
 
     //TODO DECIDE
     // Specify the conflict strategy as IGNORE, when the user tries to add an

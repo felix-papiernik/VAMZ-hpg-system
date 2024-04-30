@@ -22,7 +22,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.components.getCurrentDate
@@ -46,13 +46,14 @@ fun MeasurementEntryScreen(
     clientId: Int
 ) {
     viewModel.updateUiState(MeasurementDetails(
-        date = getCurrentDate(),
-        clientId = clientId)
+            date = getCurrentDate(),
+            clientId = clientId
+        )
     )
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(MeasurementEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
@@ -120,7 +121,7 @@ fun MeasurementInputForm(
         OutlinedTextField(
             value = measurementDetails.bodyWeightKg,
             onValueChange = { onMeasurementValueChange(measurementDetails.copy(bodyWeightKg = it)) },
-            label = { Text(stringResource(R.string.weight_in_kg)) },
+            label = { Text(stringResource(R.string.bodyweight_in_kg)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,

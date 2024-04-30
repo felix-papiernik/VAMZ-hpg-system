@@ -42,6 +42,8 @@ import com.example.inventory.ui.measurements.details.MeasurementDetailsScreen
 import com.example.inventory.ui.measurements.entry.MeasurementEntryDestination
 import com.example.inventory.ui.measurements.entry.MeasurementEntryScreen
 
+//home
+//client_entry
 /**
  * Provides Navigation graph for the application.
  */
@@ -85,13 +87,10 @@ fun HpgNavHost(
                 type = NavType.IntType
             })
         ) {
-            backStackEntry ->
-            val clientId = backStackEntry.arguments?.getInt(ClientDetailsDestination.clientIdArg)
             ClientDetailsScreen(
                 navigateToEditClientPersonalInformation = { navController.navigate("${ClientEditDestination.route}/$it") },
                 navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/$it") },
-                //navigateToMeasurementEntry = { navController.navigate("${MeasurementEntryDestination.route}/${clientId}") }, TODO ASK
-                //navigateToMeasurementUpdate = { navController.navigate("${MeasurementDetailsDestination.route}/${clientId}/${measurementId}") }, TODO ASK
+                navigateToMeasurementUpdate = { navController.navigate("${MeasurementDetailsDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
         }
@@ -102,7 +101,7 @@ fun HpgNavHost(
             })
         ) {backStackEntry ->
             val clientId = backStackEntry.arguments?.getInt(MeasurementEntryDestination.clientIdArg)
-                MeasurementEntryScreen(
+            MeasurementEntryScreen(
                 clientId = clientId ?: -1,
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
@@ -110,13 +109,13 @@ fun HpgNavHost(
         }
         composable(
             route = MeasurementDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(MeasurementDetailsDestination.clientIdArg) {
+            arguments = listOf(navArgument(MeasurementDetailsDestination.measurementIdArg) {
                 type = NavType.IntType
             })
         ) {backStackEntry ->
-            val clientId = backStackEntry.arguments?.getInt(MeasurementEntryDestination.clientIdArg)
+            val measurementId = backStackEntry.arguments?.getInt(MeasurementDetailsDestination.measurementIdArg)
             MeasurementDetailsScreen(
-                navigateToEditItem = {},
+                navigateToEditMeasurement = {navController.navigate("${MeasurementDetailsDestination.route}/${measurementId}")},
                 navigateBack = { navController.popBackStack() },
             )
         }

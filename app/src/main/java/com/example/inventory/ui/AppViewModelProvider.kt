@@ -30,6 +30,7 @@ import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.item.ItemEntryViewModel
+import com.example.inventory.ui.measurements.details.MeasurementDetailsViewModel
 import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
 
 /**
@@ -83,6 +84,13 @@ object AppViewModelProvider {
         // Initializer for MeasurementEntryViewModel
         initializer {
             MeasurementEntryViewModel(
+                inventoryApplication().container.measurementsRepository
+            )
+        }
+        // Initializer for MeasurementDetailsViewModel
+        initializer {
+            MeasurementDetailsViewModel(
+                this.createSavedStateHandle(),
                 inventoryApplication().container.measurementsRepository
             )
         }

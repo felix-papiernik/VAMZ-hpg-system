@@ -41,11 +41,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
 import java.util.Currency
 import java.util.Locale
@@ -66,7 +66,7 @@ fun ItemEntryScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(ItemEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp
@@ -190,7 +190,7 @@ fun ItemInputForm(
 @Preview(showBackground = true)
 @Composable
 private fun ItemEntryScreenPreview() {
-    InventoryTheme {
+    HpgTheme {
         ItemEntryBody(itemUiState = ItemUiState(
             ItemDetails(
                 name = "Item name", price = "10.00", quantity = "5"

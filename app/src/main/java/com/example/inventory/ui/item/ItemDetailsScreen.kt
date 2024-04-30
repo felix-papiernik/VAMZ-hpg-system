@@ -58,12 +58,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.inventory.Item
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
 
 object ItemDetailsDestination : NavigationDestination {
@@ -85,7 +85,7 @@ fun ItemDetailsScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(ItemDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
@@ -262,7 +262,7 @@ public fun DeleteConfirmationDialog(
 @Preview(showBackground = true)
 @Composable
 fun ItemDetailsScreenPreview() {
-    InventoryTheme {
+    HpgTheme {
         ItemDetailsBody(ItemDetailsUiState(
             outOfStock = true, itemDetails = ItemDetails(1, "Pen", "$100", "10")
         ), onSellItem = {}, onDelete = {})

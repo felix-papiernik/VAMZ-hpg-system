@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -46,18 +44,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.client.Client
-import com.example.inventory.data.inventory.Item
 import com.example.inventory.data.measurement.Measurement
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
+import com.example.inventory.ui.components.DetailsCard
+import com.example.inventory.ui.components.DetailsRow
 import com.example.inventory.ui.item.DeleteConfirmationDialog
-import com.example.inventory.ui.item.formatedPrice
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
 
 object ClientDetailsDestination : NavigationDestination {
@@ -74,14 +72,15 @@ fun ClientDetailsScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ClientDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    navigateToMeasurementEntry: (Int) -> Unit
+    navigateToMeasurementEntry: (Int) -> Unit,
+    navigateToMeasurementUpdate: (Int) -> Unit
 ) {
     val clientDetailsUiState = viewModel.clientDetailsStateFlow.collectAsState()
     val measurementsUiState = viewModel.measurementsStateFlow.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(ClientDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
@@ -114,11 +113,12 @@ fun ClientDetailsScreen(
                 // change occurs, the Activity will be recreated and the rememberCoroutineScope will
                 // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
-                    viewModel.deleteItem()
+                    viewModel.deleteClient()
                     navigateBack()
                 }
             },
             navigateToMeasurementEntry = { navigateToMeasurementEntry(clientDetailsUiState.value.clientDetails.id) },
+            navigateToMeasurementUpdate = navigateToMeasurementUpdate,
             measurementsList = measurementsUiState.value,
             modifier = Modifier
                 .padding(
@@ -138,7 +138,8 @@ private fun ClientDetailsBody(
     modifier: Modifier = Modifier,
     onUpdatePersonalInformation: () -> Unit,
     navigateToMeasurementEntry: () -> Unit,
-    measurementsList: List<Measurement>
+    measurementsList: List<Measurement>,
+    navigateToMeasurementUpdate: (Int) -> Unit
 ) {
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -152,6 +153,7 @@ private fun ClientDetailsBody(
         )
         ClientMeasurements(
             measurementsList = measurementsList,
+            navigateToMeasurementUpdate = navigateToMeasurementUpdate,
             navigateToMeasurementEntry = navigateToMeasurementEntry,
             modifier = Modifier.fillMaxWidth()
         )
@@ -180,7 +182,8 @@ private fun ClientDetailsBody(
 fun ClientMeasurements(
     modifier: Modifier = Modifier,
     navigateToMeasurementEntry: () -> Unit,
-    measurementsList: List<Measurement>
+    measurementsList: List<Measurement>,
+    navigateToMeasurementUpdate: (Int) -> Unit
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -231,7 +234,7 @@ fun ClientMeasurements(
             } else {
                 MeasurementsList(
                     measurementsList = measurementsList,
-                    onItemClick = { /* TODO */},
+                    onItemClick = { navigateToMeasurementUpdate(it.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -267,7 +270,9 @@ private fun MeasurementsListItem(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(dimensionResource(id = R.dimen.padding_medium)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
         ) {
             Text(
                 text = item.date,
@@ -320,66 +325,39 @@ fun ClientPersonalInformation(
                     )
                 }
             }
-            ClientDetailsRow(
-                labelResID = R.string.firstname,
-                clientDetail = client.firstName,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+            DetailsRow(labelResId = R.string.firstname, value = client.firstName, modifier = Modifier.padding(
+                horizontal = dimensionResource(
+                    id = R.dimen
+                        .padding_medium
                 )
-            )
-            ClientDetailsRow(
-                labelResID = R.string.lastname,
-                clientDetail = client.lastName,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+            ))
+            DetailsRow(labelResId = R.string.lastname, value = client.lastName, modifier = Modifier.padding(
+                horizontal = dimensionResource(
+                    id = R.dimen
+                        .padding_medium
                 )
-            )
-            ClientDetailsRow(
-                labelResID = R.string.email,
-                clientDetail = client.email,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+            ))
+            DetailsRow(labelResId = R.string.email, value = client.email, modifier = Modifier.padding(
+                horizontal = dimensionResource(
+                    id = R.dimen
+                        .padding_medium
                 )
-            )
-            ClientDetailsRow(
-                labelResID = R.string.date_of_birth,
-                clientDetail = client.dateOfBirth,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+            ))
+            DetailsRow(labelResId = R.string.date_of_birth, value = client.dateOfBirth, modifier = Modifier.padding(
+                horizontal = dimensionResource(
+                    id = R.dimen
+                        .padding_medium
                 )
-            )
+            ))
         }
 
-    }
-}
-
-@Composable
-private fun ClientDetailsRow(
-    @StringRes labelResID: Int, clientDetail: String, modifier: Modifier = Modifier
-) {
-    Row(modifier = modifier) {
-        Text(text = stringResource(labelResID))
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = clientDetail, fontWeight = FontWeight.Bold)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun ItemDetailsScreenPreview() {
-    InventoryTheme {
+    HpgTheme {
         ClientDetailsBody(
             ClientDetailsUiState(
                 clientDetails = Client(
@@ -393,7 +371,8 @@ fun ItemDetailsScreenPreview() {
             onDelete = {},
             onUpdatePersonalInformation = { },
             navigateToMeasurementEntry = {},
-            measurementsList = emptyList()
+            measurementsList = emptyList(),
+            navigateToMeasurementUpdate = {}
         )
     }
 }

@@ -9,27 +9,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.inventory.InventoryTopAppBar
+import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
-import com.example.inventory.data.client.ClientsRepository
-import com.example.inventory.data.inventory.ItemsRepository
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.client.entry.ClientEntryBody
-import com.example.inventory.ui.client.entry.ClientUiState
-import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
+import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
 
 
@@ -51,7 +42,7 @@ fun ClientEditScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            HpgTopAppBar(
                 title = stringResource(ClientEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp
@@ -87,7 +78,7 @@ fun ClientEditScreen(
 @Preview(showBackground = true)
 @Composable
 fun ClientEditScreenPreview() {
-    InventoryTheme {
+    HpgTheme {
         com.example.inventory.ui.client.edit.ClientEditScreen(navigateBack = { /*Do nothing*/ }, onNavigateUp = { /*Do nothing*/ })
     }
 }

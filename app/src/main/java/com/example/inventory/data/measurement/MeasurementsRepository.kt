@@ -15,7 +15,7 @@ interface MeasurementsRepository {
     /**
      * Retrieve a measurement from the given data source that matches with the [id] and [clientId].
      */
-    fun getMeasurementStream(id: Int, clientId: Int): Flow<Measurement?>
+    fun getMeasurementStream(id: Int): Flow<Measurement?>
 
     /**
      * Insert measurement in the data source

@@ -53,7 +53,7 @@ class ClientDetailsViewModel(
     /**
      * Deletes the client from the [ClientsRepository]'s data source.
      */
-    suspend fun deleteItem() {
+    suspend fun deleteClient() {
         clientsRepository.deleteClient(clientDetailsStateFlow.value.clientDetails.toClient())
     }
 

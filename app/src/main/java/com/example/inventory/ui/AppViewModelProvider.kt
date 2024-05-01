@@ -31,6 +31,7 @@ import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.item.ItemEntryViewModel
 import com.example.inventory.ui.measurements.details.MeasurementDetailsViewModel
+import com.example.inventory.ui.measurements.edit.MeasurementEditViewModel
 import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
 
 /**
@@ -90,6 +91,13 @@ object AppViewModelProvider {
         // Initializer for MeasurementDetailsViewModel
         initializer {
             MeasurementDetailsViewModel(
+                this.createSavedStateHandle(),
+                inventoryApplication().container.measurementsRepository
+            )
+        }
+        // Initializer for ClientEditViewModel
+        initializer {
+            MeasurementEditViewModel(
                 this.createSavedStateHandle(),
                 inventoryApplication().container.measurementsRepository
             )

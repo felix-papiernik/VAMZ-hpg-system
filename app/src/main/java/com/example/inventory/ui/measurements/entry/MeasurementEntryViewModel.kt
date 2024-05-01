@@ -32,14 +32,17 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
      */
     fun updateUiState(measurementDetails: MeasurementDetails) {
         measurementUiState =
-            MeasurementUiState(measurementDetails = measurementDetails, isMeasurementValid = validateInput(measurementDetails))
+            MeasurementUiState(measurementDetails = measurementDetails, isMeasurementValid = validateMeasurementInput(measurementDetails))
     }
 
     /**
      * Inserts an [Measurement] in the Room database
      */
-    suspend fun saveMeasurement() {
+    suspend fun saveMeasurement() {/*
         if (validateInput()) {
+            measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
+        }*/
+        if (validateMeasurementInput(measurementUiState.measurementDetails)) {
             measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
         }
     }
@@ -47,14 +50,24 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
     private fun validateInput(uiState: MeasurementDetails = measurementUiState.measurementDetails): Boolean {
         return with(uiState) {
             bodyWeightKg.isNotEmpty() && bodyWeightKg.toDoubleOrNull() != null
-            && leanMuscleMassKg.isNotEmpty() && leanMuscleMassKg.toDoubleOrNull() != null
-            && bodyFatKg.isNotEmpty() && bodyFatKg.toDoubleOrNull() != null
-            && visceralFat.isNotEmpty() && visceralFat.toDoubleOrNull() != null
-            && mineralsKg.isNotEmpty() && mineralsKg.toDoubleOrNull() != null
-            && metabolicAge.isNotEmpty() && metabolicAge.toDoubleOrNull() != null
+                    && leanMuscleMassKg.isNotEmpty() && leanMuscleMassKg.toDoubleOrNull() != null
+                    && bodyFatKg.isNotEmpty() && bodyFatKg.toDoubleOrNull() != null
+                    && visceralFat.isNotEmpty() && visceralFat.toDoubleOrNull() != null
+                    && mineralsKg.isNotEmpty() && mineralsKg.toDoubleOrNull() != null
+                    && metabolicAge.isNotEmpty() && metabolicAge.toDoubleOrNull() != null
         }
     }
+}
 
+fun validateMeasurementInput(uiState: MeasurementDetails): Boolean {
+    return with(uiState) {
+        bodyWeightKg.isNotEmpty() && bodyWeightKg.toDoubleOrNull() != null
+                && leanMuscleMassKg.isNotEmpty() && leanMuscleMassKg.toDoubleOrNull() != null
+                && bodyFatKg.isNotEmpty() && bodyFatKg.toDoubleOrNull() != null
+                && visceralFat.isNotEmpty() && visceralFat.toDoubleOrNull() != null
+                && mineralsKg.isNotEmpty() && mineralsKg.toDoubleOrNull() != null
+                && metabolicAge.isNotEmpty() && metabolicAge.toDoubleOrNull() != null
+    }
 }
 
 //These functions and data classes are used to separate the UI state from the database model.

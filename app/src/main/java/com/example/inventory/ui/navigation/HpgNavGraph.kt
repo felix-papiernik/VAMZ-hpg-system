@@ -39,6 +39,8 @@ import com.example.inventory.ui.item.ItemEntryDestination
 import com.example.inventory.ui.item.ItemEntryScreen
 import com.example.inventory.ui.measurements.details.MeasurementDetailsDestination
 import com.example.inventory.ui.measurements.details.MeasurementDetailsScreen
+import com.example.inventory.ui.measurements.edit.MeasurementEditDestination
+import com.example.inventory.ui.measurements.edit.MeasurementEditScreen
 import com.example.inventory.ui.measurements.entry.MeasurementEntryDestination
 import com.example.inventory.ui.measurements.entry.MeasurementEntryScreen
 
@@ -115,8 +117,19 @@ fun HpgNavHost(
         ) {backStackEntry ->
             val measurementId = backStackEntry.arguments?.getInt(MeasurementDetailsDestination.measurementIdArg)
             MeasurementDetailsScreen(
-                navigateToEditMeasurement = {navController.navigate("${MeasurementDetailsDestination.route}/${measurementId}")},
+                navigateToEditMeasurement = {navController.navigate("${MeasurementEditDestination.route}/${measurementId}")},
                 navigateBack = { navController.popBackStack() },
+            )
+        }
+        composable(
+            route = MeasurementEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(MeasurementEditDestination.measurementIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            MeasurementEditScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
             )
         }
         composable(

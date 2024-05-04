@@ -237,10 +237,19 @@ fun ClientMeasurements(
                     onItemClick = { navigateToMeasurementUpdate(it.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
+                MeasurementChart(
+                    measurementsList = measurementsList,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
 
     }
+}
+
+@Composable
+fun MeasurementChart(measurementsList: List<Measurement>, modifier: Modifier) {
+    TODO("Not yet implemented")
 }
 
 @Composable

@@ -248,7 +248,7 @@ fun ClientMeasurements(
             } else {
                 MeasurementsList(
                     measurementsList = measurementsList,
-                    onItemClick = { navigateToMeasurementUpdate(it.id) },
+                    onMeasurementItemClick = { navigateToMeasurementUpdate(it.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 if (measurementsList.size > 1) {
@@ -401,7 +401,7 @@ fun MeasurementChartYPreview() {
 @Composable
 fun MeasurementsList(
     modifier: Modifier = Modifier,
-    onItemClick: (Measurement) -> Unit,
+    onMeasurementItemClick: (Measurement) -> Unit,
     measurementsList: List<Measurement>
 ) {
     Column(
@@ -411,7 +411,7 @@ fun MeasurementsList(
             MeasurementsListItem(item = item,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(item) })
+                    .clickable { onMeasurementItemClick(item) })
         }
     }
 }

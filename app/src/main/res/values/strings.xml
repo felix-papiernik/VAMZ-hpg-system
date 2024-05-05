@@ -69,4 +69,5 @@
     <string name="label1">label2</string>
     <string name="label2">label2</string>
     <string name="label3">label3</string>
+    <string name="weight_in_kg_over_time">Weight in kg over time</string>
 </resources>

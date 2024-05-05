@@ -1,6 +1,6 @@
 package com.example.inventory.ui.client.details
 
-import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -37,6 +38,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +46,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import co.yml.charts.axis.AxisData
+import co.yml.charts.common.model.Point
+import co.yml.charts.ui.linechart.LineChart
+import co.yml.charts.ui.linechart.model.GridLines
+import co.yml.charts.ui.linechart.model.IntersectionPoint
+import co.yml.charts.ui.linechart.model.Line
+import co.yml.charts.ui.linechart.model.LineChartData
+import co.yml.charts.ui.linechart.model.LinePlotData
+import co.yml.charts.ui.linechart.model.LineStyle
+import co.yml.charts.ui.linechart.model.LineType
+import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
+import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
+import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import com.example.inventory.HpgTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.client.Client
@@ -51,7 +66,6 @@ import com.example.inventory.data.measurement.Measurement
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
-import com.example.inventory.ui.components.DetailsCard
 import com.example.inventory.ui.components.DetailsRow
 import com.example.inventory.ui.item.DeleteConfirmationDialog
 import com.example.inventory.ui.navigation.NavigationDestination
@@ -88,7 +102,7 @@ fun ClientDetailsScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* TODO decide if even needed */ },
+                onClick = { navigateToMeasurementEntry(clientDetailsUiState.value.clientDetails.id)/* TODO decide if even needed */ },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .padding(
@@ -237,10 +251,12 @@ fun ClientMeasurements(
                     onItemClick = { navigateToMeasurementUpdate(it.id) },
                     modifier = Modifier.fillMaxWidth()
                 )
-                MeasurementChart(
-                    measurementsList = measurementsList,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                if (measurementsList.size > 1) {
+                    MeasurementCharts(
+                        measurementsList = measurementsList,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
 
@@ -248,8 +264,149 @@ fun ClientMeasurements(
 }
 
 @Composable
-fun MeasurementChart(measurementsList: List<Measurement>, modifier: Modifier) {
-    TODO("Not yet implemented")
+fun MeasurementCharts(measurementsList: List<Measurement>, modifier: Modifier) {
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.bodyWeightKg) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.bodyWeightKg.toFloat()) },
+        chartTitle = stringResource(R.string.bodyweight_in_kg),
+        modifier = modifier
+    )
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.leanMuscleMassKg) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.leanMuscleMassKg.toFloat()) },
+        chartTitle = stringResource(R.string.lean_muscle_mass_in_kg),
+        modifier = modifier
+    )
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.bodyFatKg) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.bodyFatKg.toFloat()) },
+        chartTitle = stringResource(R.string.body_fat_in_kg),
+        modifier = modifier
+    )
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.visceralFat) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.visceralFat.toFloat()) },
+        chartTitle = stringResource(R.string.visceral_fat),
+        modifier = modifier
+    )
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.mineralsKg) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.mineralsKg.toFloat()) },
+        chartTitle = stringResource(R.string.minerals_in_kg),
+        modifier = modifier
+    )
+    MeasurementChart(
+        measurementData = measurementsList.map { MeasurementData(it.date, it.metabolicAge) },
+        dataPoints = measurementsList.mapIndexed { index, measurement -> Point(index.toFloat(), measurement.metabolicAge.toFloat()) },
+        chartTitle = stringResource(R.string.metabolic_age),
+        modifier = modifier
+    )
+    /*
+    val bodyWeightKg: Double,
+    val leanMuscleMassKg: Double,
+    val bodyFatKg: Double,
+    val visceralFat: Double,
+    val mineralsKg: Double,
+    val metabolicAge: Double,
+     */
+}
+
+data class MeasurementData(val date: String, val value: Double)
+
+/**
+ * Single line chart with grid lines
+ *
+ * @param measurementData
+ */
+@Composable
+private fun MeasurementChart(
+    measurementData: List<MeasurementData>,
+    dataPoints: List<Point>,
+    chartTitle: String,
+    modifier: Modifier,
+) {
+    val steps = measurementData.size
+    val xAxisData = AxisData.Builder()
+        .axisStepSize(80.dp)
+        .steps(measurementData.size - 1)
+        //.startDrawPadding(50.dp)
+        .labelData { i -> measurementData[i].date }
+        .labelAndAxisLinePadding(15.dp)
+        .backgroundColor(Color.Transparent)
+        .build()
+    val yAxisData = AxisData.Builder()
+        .steps(steps)
+        .backgroundColor(Color.Transparent)
+        .labelAndAxisLinePadding(20.dp)
+        .labelData { i ->
+            // Add yMin to get the negative axis values to the scale
+            val yMin = measurementData.minOf { it.value }
+            val yMax = measurementData.maxOf { it.value }
+            val yScale = (yMax - yMin) / steps
+            String.format("%.2f", (i * yScale) + yMin)
+        }.build()
+    val data = LineChartData(
+        linePlotData = LinePlotData(
+            lines = listOf(
+                Line(
+                    dataPoints = dataPoints,
+                    lineStyle = LineStyle(lineType = LineType.Straight(false)),
+                    IntersectionPoint(),
+                    SelectionHighlightPoint(),
+                    ShadowUnderLine(),
+                    SelectionHighlightPopUp(
+                        popUpLabel = { x, y -> measurementData[x.toInt()].value.toString() },
+                        backgroundColor = Color.White,
+                    )
+                )
+            )
+        ),
+        yAxisData = yAxisData,
+        //xAxisData = xAxisData,
+        //yAxisData = AxisData.Builder().build(),
+        xAxisData = xAxisData,
+        gridLines = GridLines(),
+        paddingRight = 0.dp,
+        backgroundColor = Color.White
+    )
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.padding_small)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
+        ) {
+            Text(
+                text = chartTitle,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
+            )
+            LineChart(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .background(Color.Red)
+                    //.padding(50.dp, 0.dp, 0.dp, 0.dp)
+                    .height(200.dp),
+                lineChartData = data
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MeasurementChartYPreview() {
+    HpgTheme {
+        MeasurementCharts(
+            measurementsList = emptyList(),
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable

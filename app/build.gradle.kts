@@ -25,7 +25,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.inventory"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -87,4 +87,8 @@ dependencies {
     // Testing
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+
+    //Compose Charts
+    //implementation("com.github.tehras:charts:0.2.4-alpha")
+    implementation("co.yml:ycharts:2.1.0")
 }

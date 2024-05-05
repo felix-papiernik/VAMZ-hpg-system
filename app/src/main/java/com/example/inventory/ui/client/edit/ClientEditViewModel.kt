@@ -6,15 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inventory.R
 import com.example.inventory.data.client.ClientsRepository
 import com.example.inventory.ui.client.entry.ClientDetails
 import com.example.inventory.ui.client.entry.ClientUiState
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientUiState
-import com.example.inventory.ui.components.LongToDateString
-import com.example.inventory.ui.components.isValidDate
-import com.example.inventory.ui.navigation.NavigationDestination
+import com.example.inventory.ui.client.entry.validateClientDetailsInput
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -48,7 +45,7 @@ class ClientEditViewModel(
      * Update the client in the [ClientsRepository]'s data source
      */
     suspend fun updateClient() {
-        if (validateInput(clientUiState.clientDetails)) {
+        if (validateClientDetailsInput(clientUiState.clientDetails)) {
             clientsRepository.updateClient(clientUiState.clientDetails.toClient())
         }
     }
@@ -59,13 +56,6 @@ class ClientEditViewModel(
      */
     fun updateUiState(clientDetails: ClientDetails) {
         clientUiState =
-            ClientUiState(clientDetails = clientDetails, isEntryValid = validateInput(clientDetails))
-    }
-
-    private fun validateInput(uiState: ClientDetails = clientUiState.clientDetails): Boolean {
-        return with(uiState) {
-            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
-                    email.contains("@") && isValidDate(dateOfBirth)
-        }
+            ClientUiState(clientDetails = clientDetails, isEntryValid = validateClientDetailsInput(clientDetails))
     }
 }

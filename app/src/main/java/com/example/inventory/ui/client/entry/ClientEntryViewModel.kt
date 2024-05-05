@@ -25,26 +25,24 @@ class ClientEntryViewModel(private val clientsRepository: ClientsRepository) : V
      */
     fun updateUiState(clientDetails: ClientDetails) {
         clientUiState =
-            ClientUiState(clientDetails = clientDetails, isEntryValid = validateInput(clientDetails))
+            ClientUiState(clientDetails = clientDetails, isEntryValid = validateClientDetailsInput(clientDetails))
     }
 
     /**
      * Inserts an [Client] in the Room database
      */
     suspend fun saveClient() {
-        if (validateInput()) {
+        if (validateClientDetailsInput(clientUiState.clientDetails)) {
             clientsRepository.insertClient(clientUiState.clientDetails.toClient())
         }
     }
-
-    private fun validateInput(uiState: ClientDetails = clientUiState.clientDetails): Boolean {
-        return with(uiState) {
-            firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
-                    email.contains("@") && isValidDate(dateOfBirth)
-        }
+}
+fun validateClientDetailsInput(uiState: ClientDetails): Boolean {
+    return with(uiState) {
+        firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
+                email.contains("@") && isValidDate(dateOfBirth)
     }
 }
-
 //These functions and data classes are used to separate the UI state from the database model.
 
 /**

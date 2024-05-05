@@ -38,23 +38,9 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
     /**
      * Inserts an [Measurement] in the Room database
      */
-    suspend fun saveMeasurement() {/*
-        if (validateInput()) {
-            measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
-        }*/
+    suspend fun saveMeasurement() {
         if (validateMeasurementInput(measurementUiState.measurementDetails)) {
             measurementsRepository.insertMeasurement(measurementUiState.measurementDetails.toMeasurement())
-        }
-    }
-
-    private fun validateInput(uiState: MeasurementDetails = measurementUiState.measurementDetails): Boolean {
-        return with(uiState) {
-            bodyWeightKg.isNotEmpty() && bodyWeightKg.toDoubleOrNull() != null
-                    && leanMuscleMassKg.isNotEmpty() && leanMuscleMassKg.toDoubleOrNull() != null
-                    && bodyFatKg.isNotEmpty() && bodyFatKg.toDoubleOrNull() != null
-                    && visceralFat.isNotEmpty() && visceralFat.toDoubleOrNull() != null
-                    && mineralsKg.isNotEmpty() && mineralsKg.toDoubleOrNull() != null
-                    && metabolicAge.isNotEmpty() && metabolicAge.toDoubleOrNull() != null
         }
     }
 }

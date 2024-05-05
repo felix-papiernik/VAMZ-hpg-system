@@ -150,7 +150,8 @@ fun ClientInputForm(
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
+            isError = clientDetails.email.isNotEmpty() && !clientDetails.email.contains("@")
         )
         DateInput(
             value = clientDetails.dateOfBirth,

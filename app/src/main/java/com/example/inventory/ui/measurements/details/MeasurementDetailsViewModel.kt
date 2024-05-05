@@ -3,9 +3,7 @@ package com.example.inventory.ui.measurements.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.inventory.data.inventory.ItemsRepository
 import com.example.inventory.data.measurement.MeasurementsRepository
-import com.example.inventory.ui.client.entry.ClientDetails
 import com.example.inventory.ui.measurements.entry.MeasurementDetails
 import com.example.inventory.ui.measurements.entry.toMeasurement
 import com.example.inventory.ui.measurements.entry.toMeasurementDetails
@@ -16,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 /**
- * ViewModel to retrieve, update and delete an item from the [MeasurementsRepository]'s data source.
+ * ViewModel to retrieve, update and delete an measurement from the [MeasurementsRepository]'s data source.
  */
 class MeasurementDetailsViewModel(
     savedStateHandle: SavedStateHandle,

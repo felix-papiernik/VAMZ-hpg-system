@@ -27,9 +27,6 @@ import com.example.inventory.ui.client.details.ClientDetailsViewModel
 import com.example.inventory.ui.client.edit.ClientEditViewModel
 import com.example.inventory.ui.client.entry.ClientEntryViewModel
 import com.example.inventory.ui.home.HomeViewModel
-import com.example.inventory.ui.item.ItemDetailsViewModel
-import com.example.inventory.ui.item.ItemEditViewModel
-import com.example.inventory.ui.item.ItemEntryViewModel
 import com.example.inventory.ui.measurements.details.MeasurementDetailsViewModel
 import com.example.inventory.ui.measurements.edit.MeasurementEditViewModel
 import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
@@ -39,29 +36,10 @@ import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        // Initializer for ItemEditViewModel
-        initializer {
-            ItemEditViewModel(
-                this.createSavedStateHandle(),
-                inventoryApplication().container.itemsRepository
-            )
-        }
-        // Initializer for ItemEntryViewModel
-        initializer {
-            ItemEntryViewModel(inventoryApplication().container.itemsRepository)
-        }
-
-        // Initializer for ItemDetailsViewModel
-        initializer {
-            ItemDetailsViewModel(
-                this.createSavedStateHandle(),
-                inventoryApplication().container.itemsRepository
-            )
-        }
 
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel(inventoryApplication().container.itemsRepository, inventoryApplication().container.clientsRepository)
+            HomeViewModel(inventoryApplication().container.clientsRepository)
         }
         // Initializer for ClientEntryViewModel
         initializer {

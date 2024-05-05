@@ -27,6 +27,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,8 +67,8 @@ import com.example.inventory.data.measurement.Measurement
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.client.entry.toClient
 import com.example.inventory.ui.client.entry.toClientDetails
+import com.example.inventory.ui.components.DeleteConfirmationDialog
 import com.example.inventory.ui.components.DetailsRow
-import com.example.inventory.ui.item.DeleteConfirmationDialog
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.HpgTheme
 import kotlinx.coroutines.launch
@@ -171,14 +172,13 @@ private fun ClientDetailsBody(
             navigateToMeasurementEntry = navigateToMeasurementEntry,
             modifier = Modifier.fillMaxWidth()
         )
-        /*
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.delete))
-        }*/
+        }
         if (deleteConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -301,14 +301,6 @@ fun MeasurementCharts(measurementsList: List<Measurement>, modifier: Modifier) {
         chartTitle = stringResource(R.string.metabolic_age),
         modifier = modifier
     )
-    /*
-    val bodyWeightKg: Double,
-    val leanMuscleMassKg: Double,
-    val bodyFatKg: Double,
-    val visceralFat: Double,
-    val mineralsKg: Double,
-    val metabolicAge: Double,
-     */
 }
 
 data class MeasurementData(val date: String, val value: Double)
@@ -329,7 +321,6 @@ private fun MeasurementChart(
     val xAxisData = AxisData.Builder()
         .axisStepSize(80.dp)
         .steps(measurementData.size - 1)
-        //.startDrawPadding(50.dp)
         .labelData { i -> measurementData[i].date }
         .labelAndAxisLinePadding(15.dp)
         .backgroundColor(Color.Transparent)
@@ -362,8 +353,6 @@ private fun MeasurementChart(
             )
         ),
         yAxisData = yAxisData,
-        //xAxisData = xAxisData,
-        //yAxisData = AxisData.Builder().build(),
         xAxisData = xAxisData,
         gridLines = GridLines(),
         paddingRight = 0.dp,

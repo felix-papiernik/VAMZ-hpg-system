@@ -19,10 +19,6 @@ package com.example.inventory.data
 import android.content.Context
 import com.example.inventory.data.client.ClientsRepository
 import com.example.inventory.data.client.OfflineClientsRepository
-import com.example.inventory.data.inventory.InventoryDatabase
-import com.example.inventory.data.inventory.ItemsRepository
-import com.example.inventory.data.inventory.OfflineItemsRepository
-import com.example.inventory.data.measurement.HpgDatabase
 import com.example.inventory.data.measurement.MeasurementsRepository
 import com.example.inventory.data.measurement.OfflineMeasurementsRepository
 
@@ -30,7 +26,6 @@ import com.example.inventory.data.measurement.OfflineMeasurementsRepository
  * App container for Dependency injection.
  */
 interface AppContainer {
-    val itemsRepository: ItemsRepository
     val clientsRepository: ClientsRepository
     val measurementsRepository: MeasurementsRepository
 }
@@ -39,12 +34,6 @@ interface AppContainer {
  * [AppContainer] implementation that provides instances of repositories.
  */
 class AppDataContainer(private val context: Context) : AppContainer {
-    /**
-     * Implementation for [ItemsRepository]
-     */
-    override val itemsRepository: ItemsRepository by lazy {
-        OfflineItemsRepository(InventoryDatabase.getDatabase(context).itemDao())
-    }
     /**
      * Implementation for [ClientsRepository]
      */

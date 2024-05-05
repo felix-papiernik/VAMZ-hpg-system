@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.client.ClientsRepository
-import com.example.inventory.data.inventory.ItemsRepository
 import com.example.inventory.data.measurement.Measurement
 import com.example.inventory.data.measurement.MeasurementsRepository
 import com.example.inventory.ui.client.entry.ClientDetails
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 /**
- * ViewModel to retrieve, update and delete an item from the [ItemsRepository]'s data source.
+ * ViewModel to retrieve, update and delete an client from the [ClientsRepository]'s data source and to contain measurements from [MeasurementsRepository]'s data source.
  */
 class ClientDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -28,7 +27,7 @@ class ClientDetailsViewModel(
     private val clientId: Int = checkNotNull(savedStateHandle[ClientDetailsDestination.clientIdArg])
 
     /**
-     * Holds the item details ui state. The data is retrieved from [ItemsRepository] and mapped to
+     * Holds the client details ui state. The data is retrieved from [ClientsRepository] and mapped to
      * the UI state.
      */
     val clientDetailsStateFlow: StateFlow<ClientDetailsUiState> =
@@ -41,7 +40,9 @@ class ClientDetailsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = ClientDetailsUiState()
             )
-
+    /**
+     * Holds the measurements list flow. The data is retrieved from [MeasurementsRepository].
+     */
     val measurementsStateFlow: StateFlow<List<Measurement>> =
         measurementsRepository.getAllClientMeasurementsStream(clientId)
             .stateIn(

@@ -31,12 +31,6 @@ import com.example.inventory.ui.client.entry.ClientEntryDestination
 import com.example.inventory.ui.client.entry.ClientEntryScreen
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
-import com.example.inventory.ui.item.ItemDetailsDestination
-import com.example.inventory.ui.item.ItemDetailsScreen
-import com.example.inventory.ui.item.ItemEditDestination
-import com.example.inventory.ui.item.ItemEditScreen
-import com.example.inventory.ui.item.ItemEntryDestination
-import com.example.inventory.ui.item.ItemEntryScreen
 import com.example.inventory.ui.measurements.details.MeasurementDetailsDestination
 import com.example.inventory.ui.measurements.details.MeasurementDetailsScreen
 import com.example.inventory.ui.measurements.edit.MeasurementEditDestination
@@ -61,10 +55,6 @@ fun HpgNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
-                navigateToItemUpdate = {
-                    navController.navigate("${ItemDetailsDestination.route}/${it}")
-                },
                 navigateToClientEntry = { navController.navigate(ClientEntryDestination.route) },
                 navigateToClientUpdate = {
                     navController.navigate("${ClientDetailsDestination.route}/${it}")
@@ -73,12 +63,6 @@ fun HpgNavHost(
         }
         composable(route = ClientEntryDestination.route) {
             ClientEntryScreen(
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
-            )
-        }
-        composable(route = ItemEntryDestination.route) {
-            ItemEntryScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
@@ -133,34 +117,12 @@ fun HpgNavHost(
             )
         }
         composable(
-            route = ItemDetailsDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
-                type = NavType.IntType
-            })
-        ) {
-            ItemDetailsScreen(
-                navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
-                navigateBack = { navController.navigateUp() }
-            )
-        }
-        composable(
             route = ClientEditDestination.routeWithArgs,
             arguments = listOf(navArgument(ClientEditDestination.clientIdArg) {
                 type = NavType.IntType
             })
         ) {
             ClientEditScreen(
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
-            )
-        }
-        composable(
-            route = ItemEditDestination.routeWithArgs,
-            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
-                type = NavType.IntType
-            })
-        ) {
-            ItemEditScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )

@@ -1,4 +1,4 @@
-package com.example.inventory.data.measurement
+package com.example.inventory.data
 
 import android.content.Context
 import androidx.room.Database
@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.inventory.data.client.Client
 import com.example.inventory.data.client.ClientDao
+import com.example.inventory.data.measurement.Measurement
+import com.example.inventory.data.measurement.MeasurementDao
 
 /**
  * Database class with a singleton Instance object.

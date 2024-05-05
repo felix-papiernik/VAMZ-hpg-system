@@ -6,8 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.inventory.data.client.Client
 import com.example.inventory.data.client.ClientsRepository
-import com.example.inventory.data.inventory.Item
-import com.example.inventory.ui.components.LongToDateString
 import com.example.inventory.ui.components.isValidDate
 
 /**
@@ -31,7 +29,7 @@ class ClientEntryViewModel(private val clientsRepository: ClientsRepository) : V
     }
 
     /**
-     * Inserts an [Item] in the Room database
+     * Inserts an [Client] in the Room database
      */
     suspend fun saveClient() {
         if (validateInput()) {

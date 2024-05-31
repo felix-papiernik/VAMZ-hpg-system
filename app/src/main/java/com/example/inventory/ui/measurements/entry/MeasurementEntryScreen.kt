@@ -111,7 +111,7 @@ fun MeasurementEntryBody(
 @Composable
 fun MeasurementInputForm(
     measurementDetails: MeasurementDetails,
-    onMeasurementValueChange: (MeasurementDetails) -> Unit,
+    onMeasurementValueChange: (MeasurementDetails) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column(

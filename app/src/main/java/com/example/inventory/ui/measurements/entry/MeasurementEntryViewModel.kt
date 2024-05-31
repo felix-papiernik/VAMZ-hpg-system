@@ -21,7 +21,6 @@ class MeasurementEntryViewModel(private val measurementsRepository: Measurements
             measurementDetails = MeasurementDetails(
                 date = getCurrentDate()
             )
-
         )
     )
         private set
@@ -69,7 +68,7 @@ data class MeasurementDetails(
     val id: Int = 0,
     val clientId: Int = 0,
     val date: String = "",
-    val bodyWeightKg: String = "",
+    val bodyWeightKg: String = "150",
     val leanMuscleMassKg: String = "",
     val bodyFatKg: String = "",
     val visceralFat: String = "",

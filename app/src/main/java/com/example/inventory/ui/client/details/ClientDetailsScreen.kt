@@ -378,7 +378,6 @@ private fun MeasurementChart(
             LineChart(
                 modifier = modifier
                     .fillMaxWidth()
-                    .background(Color.Red)
                     //.padding(50.dp, 0.dp, 0.dp, 0.dp)
                     .height(200.dp),
                 lineChartData = data

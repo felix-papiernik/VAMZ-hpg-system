@@ -68,7 +68,7 @@ data class MeasurementDetails(
     val id: Int = 0,
     val clientId: Int = 0,
     val date: String = "",
-    val bodyWeightKg: String = "150",
+    val bodyWeightKg: String = "",
     val leanMuscleMassKg: String = "",
     val bodyFatKg: String = "",
     val visceralFat: String = "",

@@ -45,11 +45,14 @@ fun MeasurementEntryScreen(
     viewModel: MeasurementEntryViewModel = viewModel(factory = AppViewModelProvider.Factory),
     clientId: Int
 ) {
-    viewModel.updateUiState(MeasurementDetails(
+
+    viewModel.updateUiState(
+        viewModel.measurementUiState.measurementDetails.copy(
             date = getCurrentDate(),
             clientId = clientId
         )
     )
+
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {

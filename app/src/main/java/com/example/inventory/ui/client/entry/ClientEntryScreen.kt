@@ -127,6 +127,9 @@ fun ClientInputForm(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                cursorColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -140,6 +143,9 @@ fun ClientInputForm(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                cursorColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -153,6 +159,9 @@ fun ClientInputForm(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                cursorColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
@@ -164,18 +173,6 @@ fun ClientInputForm(
             onValueChange = { onValueChange(clientDetails.copy(dateOfBirth = it)) },
             labelResId = R.string.client_date_of_birth_
         )
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            val state = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
-            DatePicker(
-                state = state,
-                modifier = Modifier.padding(16.dp),
-                dateFormatter = )
-
-            Text(
-                "Entered date timestamp: ${state.selectedDateMillis ?: "no input"}",
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-        }
         if (enabled) {
             Text(
                 text = stringResource(R.string.required_fields),

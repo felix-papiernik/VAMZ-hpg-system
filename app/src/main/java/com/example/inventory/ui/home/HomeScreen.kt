@@ -110,7 +110,6 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             clientsList = homeUiStateClients.clientsList,
-            navigateToClientEntry = navigateToClientEntry,
             onClientClick = navigateToClientUpdate,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
@@ -122,7 +121,6 @@ fun HomeScreen(
 private fun HomeBody(
     clientsList: List<Client>,
     onClientClick: (Int) -> Unit,
-    navigateToClientEntry: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -130,21 +128,6 @@ private fun HomeBody(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
-        /*if (itemList.isEmpty()) {
-            Text(
-                text = stringResource(R.string.no_item_description),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(contentPadding),
-            )
-        } else {
-            InventoryList(
-                itemList = itemList,
-                onItemClick = { onItemClick(it.id) },
-                contentPadding = contentPadding,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
-            )
-        }*/
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier,
@@ -166,9 +149,6 @@ private fun HomeBody(
                     contentPadding = contentPadding,
                     modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
                 )
-            }
-            Button(onClick = navigateToClientEntry) {
-                Text(text = stringResource(R.string.add_client))
             }
         }
     }
@@ -204,6 +184,10 @@ private fun ListClientItem(
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        )
     ) {
         Row(
             modifier = Modifier.
@@ -228,7 +212,6 @@ fun HomeBodyPreview() {
                 Client(1, "Félix", "Papiernik", "felixpapiernik42@gmail.com", dateOfBirth = "1.1.2000"),
                 Client(2, "John", "Doe", "johndoe@gmail.com", dateOfBirth = "1.1.2000")
             ),
-            navigateToClientEntry = {},
             onClientClick = {}
         )
     }
@@ -239,7 +222,7 @@ fun HomeBodyPreview() {
 fun HomeBodyEmptyListPreview() {
     HpgTheme {
         HomeBody(
-            clientsList =  listOf(), navigateToClientEntry = {}, onClientClick = {})
+            clientsList =  listOf(), onClientClick = {})
     }
 }
 

@@ -43,6 +43,10 @@ fun validateClientDetailsInput(uiState: ClientDetails): Boolean {
                 email.contains("@") && isValidDate(dateOfBirth)
     }
 }
+
+fun validEmail(email: String): Boolean {
+    return email.matches(Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))
+}
 //These functions and data classes are used to separate the UI state from the database model.
 
 /**

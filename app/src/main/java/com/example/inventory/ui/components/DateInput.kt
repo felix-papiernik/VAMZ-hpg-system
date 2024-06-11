@@ -34,27 +34,26 @@ fun DateInput(
         ),
         isError = value.isNotEmpty() && !isValidDate(value),
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) }
+        placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) },
+        supportingText = {
+            if (value.isNotEmpty() && !isValidDate(value)) {
+                Text(
+                    text = stringResource(R.string.invalid_date),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error
+                )
+
+            }
+        }
 
     )
 }
 
 /**
- * Converts a date string in dd.mm.yyyy format to a long value.
+ * Check if the given date is valid
  */
-fun DateToLong(date: String): Long {
-    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
-    return dateFormat.parse(date).time
-}
-/**
- * Converts a long value to a date string in dd.mm.yyyy format.
- */
-fun LongToDateString(date: Long): String {
-    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
-    return dateFormat.format(date)
-}
-
 fun isValidDate(date: String): Boolean {
+    if (date.length != 10) return false
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
     dateFormat.isLenient = false
     return try {
@@ -65,6 +64,9 @@ fun isValidDate(date: String): Boolean {
     }
 }
 
+/**
+ * Get the current date in the format dd.MM.yyyy
+ */
 fun getCurrentDate(): String {
     val calendar = Calendar.getInstance()
     val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())

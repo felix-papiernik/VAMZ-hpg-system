@@ -72,4 +72,6 @@
     <string name="weight_in_kg_over_time">Weight in kg over time</string>
     <string name="delete_client">Delete client</string>
     <string name="delete_measurement">Delete measurement</string>
+    <string name="invalid_email">Provide email in format for example johndoe@mail.com</string>
+    <string name="invalid_date">Provide date in format DD.MM.YYYY</string>
 </resources>

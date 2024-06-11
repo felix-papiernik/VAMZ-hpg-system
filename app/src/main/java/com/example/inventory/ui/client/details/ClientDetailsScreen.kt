@@ -431,10 +431,6 @@ private fun MeasurementsListItem(
             Text(
                 text = item.date,
             )
-            Spacer(Modifier.weight(1f))
-            Text(
-                text = item.id.toString(),
-            )
         }
     }
 }
@@ -526,6 +522,32 @@ fun ItemDetailsScreenPreview() {
             onUpdatePersonalInformation = { },
             navigateToMeasurementEntry = {},
             measurementsList = emptyList(),
+            navigateToMeasurementUpdate = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ItemDetailsScreenPreviewWithMeasurements() {
+    HpgTheme {
+        ClientDetailsBody(
+            ClientDetailsUiState(
+                clientDetails = Client(
+                    1,
+                    "John",
+                    "Doe",
+                    "john.doe@mail.com",
+                    "01.01.2000"
+                ).toClientDetails()
+            ),
+            onDelete = {},
+            onUpdatePersonalInformation = { },
+            navigateToMeasurementEntry = {},
+            measurementsList = listOf(
+                Measurement(1, 1, "01.01.2021", 80.0, 20.0, 10.0, 5.0, 5.0, 20.0),
+                Measurement(2, 1, "01.02.2021", 79.7, 21.6, 8.7, 5.0, 5.0, 20.0),
+            ),
             navigateToMeasurementUpdate = {}
         )
     }

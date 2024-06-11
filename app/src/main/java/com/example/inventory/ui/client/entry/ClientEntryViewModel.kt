@@ -39,11 +39,11 @@ class ClientEntryViewModel(private val clientsRepository: ClientsRepository) : V
 }
 fun validateClientDetailsInput(uiState: ClientDetails): Boolean {
     return with(uiState) {
-        firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && dateOfBirth.isNotBlank() &&
+        firstName.isNotBlank() && lastName.isNotBlank()
+                && email.isNotBlank() && dateOfBirth.isNotBlank() &&
                 email.contains("@") && isValidDate(dateOfBirth)
     }
 }
-
 fun validEmail(email: String): Boolean {
     return email.matches(Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))
 }

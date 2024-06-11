@@ -36,7 +36,6 @@ import com.example.inventory.ui.measurements.entry.MeasurementEntryViewModel
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-
         // Initializer for HomeViewModel
         initializer {
             HomeViewModel(inventoryApplication().container.clientsRepository)
